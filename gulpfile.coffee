@@ -1,26 +1,12 @@
-gulp           = require 'gulp'
-coffee         = require 'gulp-coffee'
+gulp    = require 'gulp'
+nodemon = require 'gulp-nodemon'
 
+gulp.task 'server', ->
+  nodemon
+    script: 'app.coffee'
+    ext: 'html js'
+    ignore: ['./node_modules/**']
 
-gulp.task 'coffee:compile', ->
-  gulp.src './**/*.coffee'
-      .pipe coffee()
-      .pipe concat('application.js')
-      .pipe sourcemaps.write('.')
-      .pipe gulp.dest('./public/assets/dist/')
+gulp.task 'default', ['watch']
 
-gulp.task 'webserver', ->
-  gulp.src './public'
-      .pipe webserver({
-        port: 8889
-        livereload: false
-        directoryListing: false
-        open: false
-      })
-
-gulp.task 'default', ['coffee:compile'], ->
-
-gulp.task 'watch', ['default', 'webserver'], ->
-  gulp.watch ['./bower.json'], ['bower:concat', 'bower:css']
-  gulp.watch ['./public/app/**/*.js'], ['javascript:concat']
-  gulp.watch ['./app/**/*.coffee'], ['coffee:compile']
+gulp.task 'watch', ['server']
