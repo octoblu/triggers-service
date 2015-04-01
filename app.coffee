@@ -8,4 +8,4 @@ server = app.listen 8889, ->
   host = server.address().address
   port = server.address().port
 
-  console.log 'Server running http://%s:%s', host, port
+  console.log 'Server running on http://%s:%s', host, port

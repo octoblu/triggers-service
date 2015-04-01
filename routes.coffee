@@ -1,10 +1,13 @@
 express = require 'express'
+request = require 'request'
 router  = express.Router()
 
-router.get '/', (req, res) ->
-  res.send 'Hello World!'
+TriggerController = require './trigger-controller'
+triggerController = new TriggerController()
 
-router.get '/status', (req, res) ->
-  res.send status: 'online'
+router.get '/', (req, res) ->
+  res.send 'Trigger Service. I am Groot!!!'
+
+router.get '/triggers', triggerController.getTriggers
 
 module.exports = router

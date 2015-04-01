@@ -4,7 +4,7 @@ nodemon = require 'gulp-nodemon'
 gulp.task 'server', ->
   nodemon
     script: 'app.coffee'
-    ext: 'html js'
+    ext: 'html js coffee'
     ignore: ['./node_modules/**']
 
 gulp.task 'default', ['watch']
