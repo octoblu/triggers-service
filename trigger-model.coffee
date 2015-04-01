@@ -6,7 +6,23 @@ class TriggerModel
     # use env variable for dev/prod urls
     @apiPrefix = 'http://0.0.0.0:3000'
 
-  getTriggers: (bearerToken, callback) =>
+  trigger: (flowId, triggerId, bearerToken, callback=->) =>
+    options =
+      json:
+        devices: [flowId]
+        topic: 'button'
+        payload:
+          from: triggerId
+      auth:
+        bearer: bearerToken
+
+    request.post "#{@apiPrefix}/messages", options, (error, response, body) =>
+      return callback error if error?
+      return callback new Error(body.error) if body?.error?
+
+      callback null, body
+
+  getTriggers: (bearerToken, callback=->) =>
     options =
       url: "#{@apiPrefix}/devices?type=octoblu:flow"
       'auth':

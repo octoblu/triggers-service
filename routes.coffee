@@ -8,6 +8,8 @@ triggerController = new TriggerController()
 router.get '/', (req, res) ->
   res.send 'Trigger Service. I am Groot!!!'
 
+router.post '/trigger/:flowId/:triggerId', triggerController.trigger
+
 router.get '/triggers', triggerController.getTriggers
 
 module.exports = router
