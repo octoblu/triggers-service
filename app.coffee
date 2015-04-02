@@ -1,11 +1,15 @@
 express = require 'express'
-routes = require './routes'
+TriggerController = require './trigger-controller'
+
 app = express()
+triggerController = new TriggerController()
 
-app.use routes
+app.get '/', (req, res) ->
+  res.send online: true
 
-server = app.listen 8889, ->
-  host = server.address().address
-  port = server.address().port
+app.get '/triggers', triggerController.getTriggers
 
-  console.log 'Server running on http://%s:%s', host, port
+app.post '/trigger/:flowId/:triggerId', triggerController.trigger
+
+
+server = app.listen 8889
