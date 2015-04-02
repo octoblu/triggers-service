@@ -1,0 +1,26 @@
+id: triggers-service-blue-controller
+kind: ReplicationController
+apiVersion: v1beta1
+labels:
+  name: triggers-service-blue
+  version: "$SHORT_COMMIT"
+desiredState:
+  replicas: 2
+  replicaSelector:
+    name: triggers-service-blue
+    version: "$SHORT_COMMIT"
+  podTemplate:
+    labels:
+      name: triggers-service-blue
+      app: triggers-service-blue
+      version: "$SHORT_COMMIT"
+    desiredState:
+      manifest:
+        version: v1beta1
+        id: triggers-service-blue
+        containers:
+          - name: triggers-service-blue
+            image: octoblu/triggers-service:$SHORT_COMMIT
+            ports:
+              - containerPort: 9000
+

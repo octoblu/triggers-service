@@ -1,0 +1,26 @@
+id: triggers-service-green-controller
+kind: ReplicationController
+apiVersion: v1beta1
+labels:
+  name: triggers-service-green
+  version: "$SHORT_COMMIT"
+desiredState:
+  replicas: 2
+  replicaSelector:
+    name: triggers-service-green
+    version: "$SHORT_COMMIT"
+  podTemplate:
+    labels:
+      name: triggers-service-green
+      app: triggers-service-green
+      version: "$SHORT_COMMIT"
+    desiredState:
+      manifest:
+        version: v1beta1
+        id: triggers-service-green
+        containers:
+          - name: triggers-service-green
+            image: octoblu/triggers-service:$SHORT_COMMIT
+            ports:
+              - containerPort: 9000
+

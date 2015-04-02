@@ -2,10 +2,10 @@ express = require 'express'
 bearerToken = require 'express-bearer-token'
 TriggerController = require './trigger-controller'
 
-MESHBLU_HOST         = process.env.MESHBLU_HOST
-MESHBLU_PORT         = process.env.MESHBLU_PORT
-MESHBLU_PROTOCOL     = process.env.MESHBLU_PROTOCOL
-TRIGGER_SERVICE_PORT = process.env.TRIGGER_SERVICE_PORT
+MESHBLU_HOST         = process.env.MESHBLU_HOST || 'meshblu.octoblu.com'
+MESHBLU_PORT         = process.env.MESHBLU_PORT || '443'
+MESHBLU_PROTOCOL     = process.env.MESHBLU_PROTOCOL || 'https'
+TRIGGER_SERVICE_PORT = process.env.TRIGGER_SERVICE_PORT || 8889
 
 triggerController = new TriggerController
   server: MESHBLU_HOST
