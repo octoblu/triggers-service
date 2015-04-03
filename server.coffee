@@ -15,7 +15,7 @@ triggerController = new TriggerController
 app = express()
 app.use bearerToken reqKey: 'bearerToken'
 
-app.get '/', (req, res) ->
+app.get '/healthcheck', (req, res) ->
   res.send online: true
 
 app.get '/triggers', triggerController.getTriggers
