@@ -14,6 +14,9 @@ desiredState:
       - name: docker-builder-$SHORT_COMMIT
         image: octoblu/dind-codedeploy
         privileged: true
+        volumeMounts:
+          - name: docker-sock
+            mountPath: /var/run/docker.sock
         env:
           - name: GIT_REPO
             value: https://github.com/$TRAVIS_REPO_SLUG.git
@@ -39,3 +42,8 @@ desiredState:
             value: $AWS_ACCESS_KEY_ID
           - name: AWS_SECRET_ACCESS_KEY
             value: $AWS_SECRET_ACCESS_KEY
+    volumes:
+      - name: docker-sock
+        source:
+          hostDir:
+            path: /var/run/docker.sock
