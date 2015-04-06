@@ -3,10 +3,12 @@
 SCRIPT_DIR=`dirname $0`
 DISTRIBUTION_DIR=`dirname $SCRIPT_DIR`
 
-BLUE_PORT=`AWS_DEFAULT_REGION=us-west-2 /usr/bin/aws elb describe-tags --load-balancer-name triggers-octoblu-com | jq '.TagDescriptions[0].Tags[] | select(.Key == "blue") | .Value | tonumber'`
-GREEN_PORT=`AWS_DEFAULT_REGION=us-west-2 /usr/bin/aws elb describe-tags --load-balancer-name triggers-octoblu-com | jq '.TagDescriptions[0].Tags[] | select(.Key == "green") | .Value | tonumber'`
+export PATH=/usr/local/bin:$PATH
 
-OLD_PORT=`AWS_DEFAULT_REGION=us-west-2 /usr/bin/aws elb describe-load-balancers --load-balancer-name triggers-octoblu-com | jq '.LoadBalancerDescriptions[0].ListenerDescriptions[0].Listener.InstancePort'`
+BLUE_PORT=`AWS_DEFAULT_REGION=us-west-2 aws elb describe-tags --load-balancer-name triggers-octoblu-com | jq '.TagDescriptions[0].Tags[] | select(.Key == "blue") | .Value | tonumber'`
+GREEN_PORT=`AWS_DEFAULT_REGION=us-west-2 aws elb describe-tags --load-balancer-name triggers-octoblu-com | jq '.TagDescriptions[0].Tags[] | select(.Key == "green") | .Value | tonumber'`
+
+OLD_PORT=`AWS_DEFAULT_REGION=us-west-2 aws elb describe-load-balancers --load-balancer-name triggers-octoblu-com | jq '.LoadBalancerDescriptions[0].ListenerDescriptions[0].Listener.InstancePort'`
 
 NEW_COLOR=blue
 NEW_PORT=${BLUE_PORT}
@@ -32,9 +34,11 @@ kubectl create -f $SCRIPT_DIR/triggers-service-${NEW_COLOR}-controller.yaml
 
 sleep 30
 
-AWS_DEFAULT_REGION=us-west-2 /usr/bin/aws elb delete-load-balancer-listeners --load-balancer-name triggers-octoblu-com --load-balancer-ports 80
-AWS_DEFAULT_REGION=us-west-2 /usr/bin/aws elb delete-load-balancer-listeners --load-balancer-name triggers-octoblu-com --load-balancer-ports 443
-AWS_DEFAULT_REGION=us-west-2 /usr/bin/aws elb create-load-balancer-listeners --load-balancer-name triggers-octoblu-com --listeners Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=${NEW_PORT}
-AWS_DEFAULT_REGION=us-west-2 /usr/bin/aws elb create-load-balancer-listeners --load-balancer-name triggers-octoblu-com --listeners Protocol=HTTPS,LoadBalancerPort=443,InstanceProtocol=HTTP,InstancePort=${NEW_PORT},SSLCertificateId=arn:aws:iam::822069890720:server-certificate/startinter.octoblu.com
+AWS_DEFAULT_REGION=us-west-2 aws elb delete-load-balancer-listeners --load-balancer-name triggers-octoblu-com --load-balancer-ports 80
+AWS_DEFAULT_REGION=us-west-2 aws elb delete-load-balancer-listeners --load-balancer-name triggers-octoblu-com --load-balancer-ports 443
+AWS_DEFAULT_REGION=us-west-2 aws elb create-load-balancer-listeners --load-balancer-name triggers-octoblu-com --listeners Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=${NEW_PORT}
+AWS_DEFAULT_REGION=us-west-2 aws elb create-load-balancer-listeners --load-balancer-name triggers-octoblu-com --listeners Protocol=HTTPS,LoadBalancerPort=443,InstanceProtocol=HTTP,InstancePort=${NEW_PORT},SSLCertificateId=arn:aws:iam::822069890720:server-certificate/startinter.octoblu.com
 
-AWS_DEFAULT_REGION=us-west-2 /usr/bin/aws elb configure-health-check --load-balancer-name triggers-octoblu-com --health-check Target=HTTP:${NEW_PORT}/healthcheck,Interval=30,Timeout=5,UnhealthyThreshold=2,HealthyThreshold=2
+AWS_DEFAULT_REGION=us-west-2 aws elb configure-health-check --load-balancer-name triggers-octoblu-com --health-check Target=HTTP:${NEW_PORT}/healthcheck,Interval=30,Timeout=5,UnhealthyThreshold=2,HealthyThreshold=2
+
+
