@@ -27,8 +27,8 @@ perl -pe $REPLACE_REGEX $SCRIPT_DIR/triggers-service-green-service.yaml.tmpl > $
 kubectl create -f $SCRIPT_DIR/triggers-service-green-service.yaml
 kubectl create -f $SCRIPT_DIR/triggers-service-blue-service.yaml
 
-kubectl delete pods -lname=triggers-service-${NEW_COLOR}
 kubectl delete rc -lname=triggers-service-${NEW_COLOR}
+kubectl delete pods -lname=triggers-service-${NEW_COLOR}
 kubectl create -f $SCRIPT_DIR/triggers-service-${NEW_COLOR}-controller.yaml
 
 
