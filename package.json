@@ -7,7 +7,7 @@
     "test": "mocha"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "chai": "^2.2.0",
     "coffee-script": "^1.9.1",
