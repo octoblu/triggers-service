@@ -1,5 +1,6 @@
 express = require 'express'
 meshbluAuth = require 'express-meshblu-auth'
+meshbluHealthcheck = require 'express-meshblu-healthcheck'
 TriggerController = require './trigger-controller'
 
 MESHBLU_HOST         = process.env.MESHBLU_HOST || 'meshblu.octoblu.com'
@@ -13,11 +14,9 @@ triggerController = new TriggerController
   protocol: MESHBLU_PROTOCOL
 
 app = express()
-app.use (request, response, next) ->
-  if request.path == '/healthcheck' then return response.send({online: true})
-  next()
+app.use meshbluHealthcheck()
 
-app.use meshbluAuth()
+app.use meshbluAuth
   server: MESHBLU_HOST
   port: MESHBLU_PORT
   protocol: MESHBLU_PROTOCOL
