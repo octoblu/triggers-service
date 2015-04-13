@@ -19,7 +19,7 @@ desiredState:
             mountPath: /var/run/docker.sock
         env:
           - name: SKIP_CLEAN
-            value: true
+            value: "true"
           - name: GIT_REPO
             value: https://github.com/$TRAVIS_REPO_SLUG.git
           - name: GIT_TAG
