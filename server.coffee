@@ -1,5 +1,5 @@
 express = require 'express'
-bearerToken = require 'express-bearer-token'
+meshbluAuth = require 'express-meshblu-auth'
 TriggerController = require './trigger-controller'
 
 MESHBLU_HOST         = process.env.MESHBLU_HOST || 'meshblu.octoblu.com'
@@ -13,7 +13,11 @@ triggerController = new TriggerController
   protocol: MESHBLU_PROTOCOL
 
 app = express()
-app.use bearerToken reqKey: 'bearerToken'
+app.use meshbluAuth(
+  server: MESHBLU_HOST
+  port: MESHBLU_PORT
+  protocol: MESHBLU_PROTOCOL
+)
 
 app.get '/healthcheck', (req, res) ->
   res.send online: true

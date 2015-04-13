@@ -1,31 +1,29 @@
 Meshblu      = require './meshblu'
 TriggerModel = require './trigger-model'
+_            = require 'lodash'
 
 class TriggerController
-  constructor: (meshbluOptions) ->
+  constructor: (@meshbluOptions={}) ->
     @triggerModel = new TriggerModel()
-    @meshblu = new Meshblu meshbluOptions
 
-  trigger: (req, res) =>
-    bearerToken = req.bearerToken
-    return res.status(401).send('Unauthorized') unless bearerToken?
+  trigger: (request, response) =>
+    {flowId, triggerId} = request.params
 
-    {flowId, triggerId} = req.params
+    meshbluConfig = _.extend request.meshbluAuth, @meshbluOptions
+    meshblu = new Meshblu meshbluConfig
+    meshblu.trigger flowId, triggerId, (error, body) =>
+      return response.status(401).json(error: 'unauthorized') if error?.message == 'unauthorized'
+      return response.status(500).end() if error?
+      return response.status(201).json(body)
 
-    @meshblu.trigger flowId, triggerId, bearerToken, (error, body) =>
-      return res.status(401).json(error.message) if error?.message == 'unauthorized'
-      return res.status(500) if error?
-      return res.status(201).json(body)
-
-  getTriggers: (req, res) =>
-    bearerToken = req.bearerToken
-    return res.status(401).send('Unauthorized') unless bearerToken?
-
-    @meshblu.flows bearerToken, (error, body) =>
-      return res.status(401).json(error.message) if error?.message == 'unauthorized'
-      return res.status(500) if error?
+  getTriggers: (request, response) =>
+    meshbluConfig = _.extend request.meshbluAuth, @meshbluOptions
+    meshblu = new Meshblu meshbluConfig
+    meshblu.flows (error, body) =>
+      return response.status(401).json(error: 'unauthorized') if error?.message == 'unauthorized'
+      return response.status(500).end() if error?
 
       triggers = @triggerModel.parseTriggersFromDevices body.devices
-      return res.status(200).json(triggers)
+      return response.status(200).json(triggers)
 
 module.exports = TriggerController
