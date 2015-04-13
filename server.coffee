@@ -13,20 +13,20 @@ triggerController = new TriggerController
   protocol: MESHBLU_PROTOCOL
 
 app = express()
-app.use meshbluAuth(
+app.use (request, response, next) ->
+  if request.path == '/healthcheck' then return response.send({online: true})
+  next()
+
+app.use meshbluAuth()
   server: MESHBLU_HOST
   port: MESHBLU_PORT
   protocol: MESHBLU_PROTOCOL
-)
-
-app.get '/healthcheck', (req, res) ->
-  res.send online: true
 
 app.get '/triggers', triggerController.getTriggers
 
 app.post '/trigger/:flowId/:triggerId', triggerController.trigger
 
-server = app.listen TRIGGER_SERVICE_PORT, =>
+server = app.listen TRIGGER_SERVICE_PORT, ->
   host = server.address().address
   port = server.address().port
 
