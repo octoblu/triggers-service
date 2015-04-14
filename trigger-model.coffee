@@ -18,7 +18,7 @@ class TriggerModel
     _.map triggersInFlow, (trigger) =>
       name: trigger.name
       flow: device.uuid
-      flowName: device.name
+      flowName: device.name ? ''
       id: trigger.id
 
 
