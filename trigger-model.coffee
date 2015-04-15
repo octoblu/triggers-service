@@ -17,9 +17,10 @@ class TriggerModel
 
     _.map triggersInFlow, (trigger) =>
       name: trigger.name
-      flow: device.uuid
+      flowId: device.uuid
       flowName: device.name ? ''
       id: trigger.id
+      uri: "https://triggers.octoblu.com/flows/#{device.uuid}/triggers/#{trigger.id}"
 
 
 module.exports = TriggerModel

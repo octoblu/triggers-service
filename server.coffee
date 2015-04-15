@@ -23,7 +23,7 @@ app.use meshbluAuth
 
 app.get '/triggers', triggerController.getTriggers
 
-app.post '/trigger/:flowId/:triggerId', triggerController.trigger
+app.post '/flows/:flowId/triggers/:triggerId', triggerController.trigger
 
 server = app.listen TRIGGER_SERVICE_PORT, ->
   host = server.address().address

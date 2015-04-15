@@ -13,11 +13,12 @@ Service to list and activate Octoblu triggers
 
     =>
     [{
-      "flow" : "5b76ec5d-fea2-4160-97c2-cf10fe847158"
       "id" : "396f2cf4-b352-4e38-b2f4-3f64ef854de8",
       "name" : "trigger",
-      "flowName" : "sample"
+      "flowId" : "5b76ec5d-fea2-4160-97c2-cf10fe847158",
+      "flowName" : "sample",
+      "uri": "https://triggers.octoblu.com/flows/5b76ec5d-fea2-4160-97c2-cf10fe847158/triggers/396f2cf4-b352-4e38-b2f4-3f64ef854de8"
     }]
 
 ## Activate Trigger Example:
-    curl -X POST https://triggers.octoblu.com/triggers/:id -H 'meshblu_auth_uuid: uuid' -H 'meshblu_auth_token: token'
+    curl -X POST https://triggers.octoblu.com/flows/:flowId/triggers/:id -H 'meshblu_auth_uuid: uuid' -H 'meshblu_auth_token: token'
