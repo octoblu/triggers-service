@@ -1,5 +1,6 @@
 request = require 'request'
 _       = require 'lodash'
+debug   = require('debug')('meshblu-http')
 
 class Meshblu
   constructor: (options={}, userCredentials={}) ->
@@ -37,7 +38,7 @@ class Meshblu
 
       callback null, body
 
-  trigger: (flowId, triggerId, bearerToken, callback=->) =>
+  trigger: (flowId, triggerId, callback=->) =>
     options = @getDefaultRequestOptions()
     options.json =
       devices: [flowId]
@@ -45,7 +46,10 @@ class Meshblu
       payload:
         from: triggerId
 
+    debug 'POST', "#{@urlBase}/messages", options
+
     request.post "#{@urlBase}/messages", options, (error, response, body) =>
+      debug error, response, body
       return callback error if error?
       return callback new Error(body.error) if body?.error?
 

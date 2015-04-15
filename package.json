@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "coffee-script": "^1.9.1",
+    "debug": "^2.1.3",
     "express": "^4.12.3",
     "express-meshblu-auth": "^1.1.4",
     "express-meshblu-healthcheck": "^1.0.0",
