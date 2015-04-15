@@ -1,4 +1,4 @@
-Meshblu      = require './meshblu'
+Meshblu      = require 'meshblu-http'
 TriggerModel = require './trigger-model'
 _            = require 'lodash'
 
@@ -11,7 +11,13 @@ class TriggerController
 
     meshbluConfig = _.extend request.meshbluAuth, @meshbluOptions
     meshblu = new Meshblu meshbluConfig
-    meshblu.trigger flowId, triggerId, (error, body) =>
+    message =
+      devices: [flowId]
+      topic: 'button'
+      payload:
+        from: triggerId
+
+    meshblu.message message, (error, body) =>
       return response.status(401).json(error: 'unauthorized') if error?.message == 'unauthorized'
       return response.status(500).end() if error?
       return response.status(201).json(body)
@@ -19,7 +25,7 @@ class TriggerController
   getTriggers: (request, response) =>
     meshbluConfig = _.extend request.meshbluAuth, @meshbluOptions
     meshblu = new Meshblu meshbluConfig
-    meshblu.flows (error, body) =>
+    meshblu.devices 'octoblu:flow', (error, body) =>
       return response.status(401).json(error: 'unauthorized') if error?.message == 'unauthorized'
       return response.status(500).end() if error?
 
