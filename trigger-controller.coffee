@@ -17,7 +17,7 @@ class TriggerController
     meshblu = new Meshblu meshbluConfig
     message =
       devices: [flowId]
-      topic: 'button'
+      topic: 'triggers-service'
       payload:
         from: triggerId
         params: request.body
