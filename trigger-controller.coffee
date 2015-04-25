@@ -1,6 +1,7 @@
 Meshblu      = require 'meshblu-http'
 TriggerModel = require './trigger-model'
 _            = require 'lodash'
+debug        = require('debug')('triggers-service:trigger-controller')
 
 class TriggerController
   constructor: (@meshbluOptions={}) ->
@@ -13,14 +14,15 @@ class TriggerController
       uuid: process.env.TRIGGER_SERVICE_UUID
       token: process.env.TRIGGER_SERVICE_TOKEN
 
-    meshbluConfig = _.extend defaultAuth, request.meshbluAuth, @meshbluOptions
+    meshbluConfig = _.extend {}, defaultAuth, request.meshbluAuth, @meshbluOptions
     meshblu = new Meshblu meshbluConfig
     message =
       devices: [flowId]
       topic: 'triggers-service'
-      payload:
-        from: triggerId
-        params: request.body
+      from: triggerId
+      params: request.body
+
+    debug 'sending message', message
 
     meshblu.message message, (error, body) =>
       return response.status(401).json(error: 'unauthorized') if error?.message == 'unauthorized'
