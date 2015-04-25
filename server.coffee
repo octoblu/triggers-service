@@ -31,6 +31,9 @@ app.get '/triggers', triggerController.getTriggers
 
 app.post '/flows/:flowId/triggers/:triggerId', triggerController.trigger
 
+app.get '/flows/:flowId/triggers/:triggerId', (request, response) ->
+  response.status(405).send('Method Not Allowed: POST required')
+
 server = app.listen TRIGGER_SERVICE_PORT, ->
   host = server.address().address
   port = server.address().port
