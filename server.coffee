@@ -7,7 +7,7 @@ cors = require 'cors'
 MESHBLU_HOST         = process.env.MESHBLU_HOST || 'meshblu.octoblu.com'
 MESHBLU_PORT         = process.env.MESHBLU_PORT || '443'
 MESHBLU_PROTOCOL     = process.env.MESHBLU_PROTOCOL || 'https'
-TRIGGER_SERVICE_PORT = process.env.TRIGGER_SERVICE_PORT || 9000
+TRIGGER_SERVICE_PORT = process.env.TRIGGER_SERVICE_PORT || 80
 
 triggerController = new TriggerController
   server: MESHBLU_HOST
