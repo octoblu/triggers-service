@@ -16,6 +16,7 @@ class TriggerController
       topic: 'button'
       payload:
         from: triggerId
+        params: request.body
 
     meshblu.message message, (error, body) =>
       return response.status(401).json(error: 'unauthorized') if error?.message == 'unauthorized'

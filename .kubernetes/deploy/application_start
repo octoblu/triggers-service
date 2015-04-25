@@ -24,8 +24,8 @@ perl -pe $REPLACE_REGEX $SCRIPT_DIR/triggers-service-blue-service.yaml.tmpl > $S
 perl -pe $REPLACE_REGEX $SCRIPT_DIR/triggers-service-green-service.yaml.tmpl > $SCRIPT_DIR/triggers-service-green-service.yaml
 
 # Always create both services
-kubectl delete -f $SCRIPT_DIR/triggers-service-${NEW_COLOR}.yaml
-kubectl create -f $SCRIPT_DIR/triggers-service-${NEW_COLOR}.yaml
+kubectl delete -f $SCRIPT_DIR/triggers-service-${NEW_COLOR}-service.yaml
+kubectl create -f $SCRIPT_DIR/triggers-service-${NEW_COLOR}-service.yaml
 
 kubectl stop rc -lname=triggers-service-${NEW_COLOR}
 kubectl delete rc -lname=triggers-service-${NEW_COLOR}
