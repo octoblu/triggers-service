@@ -19,8 +19,9 @@ class TriggerController
     message =
       devices: [flowId]
       topic: 'triggers-service'
-      from: triggerId
-      params: request.body
+      payload:
+        from: triggerId
+        params: request.body
 
     debug 'sending message', message
 
