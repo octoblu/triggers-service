@@ -23,3 +23,8 @@ desiredState:
             image: octoblu/triggers-service:$SHORT_COMMIT
             ports:
               - containerPort: 80
+            env:
+              - name: TRIGGER_SERVICE_UUID
+                value: $TRIGGER_SERVICE_UUID
+              - name: TRIGGER_SERVICE_TOKEN
+                value: $TRIGGER_SERVICE_TOKEN

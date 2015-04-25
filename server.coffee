@@ -4,10 +4,12 @@ meshbluHealthcheck = require 'express-meshblu-healthcheck'
 TriggerController = require './trigger-controller'
 cors = require 'cors'
 
-MESHBLU_HOST         = process.env.MESHBLU_HOST || 'meshblu.octoblu.com'
-MESHBLU_PORT         = process.env.MESHBLU_PORT || '443'
-MESHBLU_PROTOCOL     = process.env.MESHBLU_PROTOCOL || 'https'
-TRIGGER_SERVICE_PORT = process.env.TRIGGER_SERVICE_PORT || 80
+MESHBLU_HOST          = process.env.MESHBLU_HOST || 'meshblu.octoblu.com'
+MESHBLU_PORT          = process.env.MESHBLU_PORT || '443'
+MESHBLU_PROTOCOL      = process.env.MESHBLU_PROTOCOL || 'https'
+TRIGGER_SERVICE_PORT  = process.env.TRIGGER_SERVICE_PORT || 80
+TRIGGER_SERVICE_UUID  = process.env.TRIGGER_SERVICE_UUID
+TRIGGER_SERVICE_TOKEN = process.env.TRIGGER_SERVICE_TOKEN
 
 triggerController = new TriggerController
   server: MESHBLU_HOST

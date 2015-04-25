@@ -9,7 +9,11 @@ class TriggerController
   trigger: (request, response) =>
     {flowId, triggerId} = request.params
 
-    meshbluConfig = _.extend request.meshbluAuth, @meshbluOptions
+    defaultAuth =
+      uuid: process.env.TRIGGER_SERVICE_UUID
+      token: process.env.TRIGGER_SERVICE_TOKEN
+
+    meshbluConfig = _.extend defaultAuth, request.meshbluAuth, @meshbluOptions
     meshblu = new Meshblu meshbluConfig
     message =
       devices: [flowId]
