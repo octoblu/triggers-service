@@ -18,7 +18,7 @@ app = express()
 app.use cors()
 app.use meshbluHealthcheck()
 
-app.use meshbluAuth
+app.use '/triggers', meshbluAuth
   server: MESHBLU_HOST
   port: MESHBLU_PORT
   protocol: MESHBLU_PROTOCOL
