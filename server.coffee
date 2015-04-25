@@ -3,6 +3,9 @@ meshbluAuth = require 'express-meshblu-auth'
 meshbluHealthcheck = require 'express-meshblu-healthcheck'
 TriggerController = require './trigger-controller'
 cors = require 'cors'
+bodyParser = require('body-parser');
+
+
 
 MESHBLU_HOST          = process.env.MESHBLU_HOST || 'meshblu.octoblu.com'
 MESHBLU_PORT          = process.env.MESHBLU_PORT || '443'
@@ -19,6 +22,8 @@ triggerController = new TriggerController
 app = express()
 app.use cors()
 app.use meshbluHealthcheck()
+app.use bodyParser.urlencoded limit: '50mb', extended : true
+app.use bodyParser.json limit : '50mb'
 
 app.use '/triggers', meshbluAuth
   server: MESHBLU_HOST
