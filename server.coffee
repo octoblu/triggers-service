@@ -30,6 +30,7 @@ meshbluOptions =
   protocol: MESHBLU_PROTOCOL
 
 app.use '/triggers', meshbluAuth meshbluOptions
+app.use '/mytriggers', meshbluAuth meshbluOptions
 
 app.use '/flows/:flowId/triggers/:triggerId', (request, response, next) ->
   meshbluAuthExpress = new MeshbluAuthExpress meshbluOptions
@@ -50,6 +51,7 @@ app.use '/flows/:flowId/triggers/:triggerId', (request, response, next) ->
 app.options '*', cors()
 
 app.get '/triggers', triggerController.getTriggers
+app.get '/mytriggers', triggerController.getMyTriggers
 
 app.post '/flows/:flowId/triggers/:triggerId', triggerController.trigger
 
