@@ -1,0 +1,6 @@
+{
+  "elb-name": "triggers-octoblu-com",
+  "application-name": "triggers-service",
+  "deployment-group": "master",
+  "s3-bucket": "octoblu-deploy"
+}
