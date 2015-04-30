@@ -15,10 +15,12 @@ env:
   - DEPLOY_BUCKET=octoblu-deploy
   - DEPLOYMENT_GROUP=master
   - DEPLOY_KEY=triggers-service/triggers-service-$TRAVIS_COMMIT.zip
+  - TRIGGER_SERVICE_UUID=b560b6ee-c264-4ed9-b98e-e3376ce6ce64
   - secure: K08ZLrU6nBVZsf8h9V+ouMRJ7m69kc/BCrb+oyGSIdTu2ZWI32hUDG7pCME5RslsZCT5u/QXXdNCvACQmvupjTverDCWGPwgd7VL3YDMrKdm1ZBnegcSErv8GbBerjNoB/p0LR0A7KYQJ9CByiJld2xtHKI/4R0goesaaRfkrnY=
   - secure: VsyzS3Kci1D2JM0yrguz2j5L+RJ4qGtDDuVhKc7O1x6Cq3RgsEw99Zmq3dksnxPwE3Vc8P9lh4oaeA+khBlS2yPPUphvKu8PjS4OUaLQcIB7YXZl1YBDhibGCLLQmDMRQfOcb0eNZ+N4V+1hosO36IpJRUd9VpIHk0uwtIdxAdM=
+  - secure: zXibEP98ueEx5fQiOBUuVKFaf16umhNRYi4wg52mTgM1+eu57FnWFzHTdE37F0oodGHWyBIb6Kna5nZkryUlW4jB40WqTyCY9ZE5E5VEYegrMwnNF5N9cb0/pcfAGZN0vliMk4mq4hrPG1Z2SDloXH+umMA0JXn4CYlnUbTItLA=
 after_success:
-- .kubernetes/travis_after_success
+- ".kubernetes/travis_after_success"
 deploy:
 - provider: s3
   access_key_id: AKIAIT4X4NDGM2WVL6VA

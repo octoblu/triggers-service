@@ -24,9 +24,10 @@ perl -pe $REPLACE_REGEX $SCRIPT_DIR/triggers-service-blue-service.yaml.tmpl > $S
 perl -pe $REPLACE_REGEX $SCRIPT_DIR/triggers-service-green-service.yaml.tmpl > $SCRIPT_DIR/triggers-service-green-service.yaml
 
 # Always create both services
-kubectl create -f $SCRIPT_DIR/triggers-service-green-service.yaml
-kubectl create -f $SCRIPT_DIR/triggers-service-blue-service.yaml
+kubectl delete -f $SCRIPT_DIR/triggers-service-${NEW_COLOR}-service.yaml
+kubectl create -f $SCRIPT_DIR/triggers-service-${NEW_COLOR}-service.yaml
 
+kubectl stop rc -lname=triggers-service-${NEW_COLOR}
 kubectl delete rc -lname=triggers-service-${NEW_COLOR}
 kubectl delete pods -lname=triggers-service-${NEW_COLOR}
 kubectl create -f $SCRIPT_DIR/triggers-service-${NEW_COLOR}-controller.yaml
@@ -40,5 +41,3 @@ AWS_DEFAULT_REGION=us-west-2 aws elb create-load-balancer-listeners --load-balan
 AWS_DEFAULT_REGION=us-west-2 aws elb create-load-balancer-listeners --load-balancer-name triggers-octoblu-com --listeners Protocol=HTTPS,LoadBalancerPort=443,InstanceProtocol=HTTP,InstancePort=${NEW_PORT},SSLCertificateId=arn:aws:iam::822069890720:server-certificate/startinter.octoblu.com
 
 AWS_DEFAULT_REGION=us-west-2 aws elb configure-health-check --load-balancer-name triggers-octoblu-com --health-check Target=HTTP:${NEW_PORT}/healthcheck,Interval=30,Timeout=5,UnhealthyThreshold=2,HealthyThreshold=2
-
-
