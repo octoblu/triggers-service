@@ -50,7 +50,7 @@ app.use '/flows/:flowId/triggers/:triggerId', (request, response, next) ->
 
 app.options '*', cors()
 
-app.get '/triggers', triggerController.getTriggers
+app.get '/triggers', triggerController.getMyTriggers
 app.get '/mytriggers', triggerController.getMyTriggers
 
 app.post '/flows/:flowId/triggers/:triggerId', triggerController.trigger
