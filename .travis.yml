@@ -8,7 +8,7 @@ node_js:
 - '0.10'
 env:
   global:
-  - AWS_ACCESS_KEY_ID=AKIAIT4X4NDGM2WVL6VA
+  - AWS_ACCESS_KEY_ID=AKIAJH2D5IPIRHYJT5IA
   - DOCKER_USERNAME=octoblu
   - DEPLOY_APPLICATION_NAME=triggers-service
   - DEPLOY_REGION=us-west-2
@@ -16,23 +16,23 @@ env:
   - DEPLOYMENT_GROUP=master
   - DEPLOY_KEY=triggers-service/triggers-service-$TRAVIS_COMMIT.zip
   - TRIGGER_SERVICE_UUID=b560b6ee-c264-4ed9-b98e-e3376ce6ce64
-  - secure: K08ZLrU6nBVZsf8h9V+ouMRJ7m69kc/BCrb+oyGSIdTu2ZWI32hUDG7pCME5RslsZCT5u/QXXdNCvACQmvupjTverDCWGPwgd7VL3YDMrKdm1ZBnegcSErv8GbBerjNoB/p0LR0A7KYQJ9CByiJld2xtHKI/4R0goesaaRfkrnY=
   - secure: VsyzS3Kci1D2JM0yrguz2j5L+RJ4qGtDDuVhKc7O1x6Cq3RgsEw99Zmq3dksnxPwE3Vc8P9lh4oaeA+khBlS2yPPUphvKu8PjS4OUaLQcIB7YXZl1YBDhibGCLLQmDMRQfOcb0eNZ+N4V+1hosO36IpJRUd9VpIHk0uwtIdxAdM=
   - secure: zXibEP98ueEx5fQiOBUuVKFaf16umhNRYi4wg52mTgM1+eu57FnWFzHTdE37F0oodGHWyBIb6Kna5nZkryUlW4jB40WqTyCY9ZE5E5VEYegrMwnNF5N9cb0/pcfAGZN0vliMk4mq4hrPG1Z2SDloXH+umMA0JXn4CYlnUbTItLA=
+  - secure: n3/Q3IlDhxojFkwyuiwmOryOZL9XjF/ycsFSyrF8LC3aC91hMgLdrZt9dUbXmBBqK06JrCljDdj8u6HzVOKHbohtTfnOKjSHcWNHEmHQU7Y9ocd/WEN7M1WkPpJMxOXB2EiqLAaDSZXPOlHQWlyT9jcRCstrmp0Lu/JUrwBxP0Q=
 after_success:
-- ".kubernetes/travis_after_success"
+- .kubernetes/travis_after_success
 deploy:
 - provider: s3
-  access_key_id: AKIAIT4X4NDGM2WVL6VA
+  access_key_id: AKIAJH2D5IPIRHYJT5IA
   secret_access_key: &1
-    secure: vGzDmGYm54GGG1/iFm14JSt1EwrkVyqUVJyG5V1n6DGZaY3QVQgUpnsWYVUj/z9lzJkrvBpQg+rWzuHrk3o5wQUMQQQFs0AqltByVgCFxPpbMtsfH7HTQovUkGE/sLFcBKd5MdhMOxIyxdySgpVnxQC0OzbDTd57Ik/tWkL3wpg=
+    secure: qPQVzfW2hG2XjbB947qVxebivG8FgIVSz4JQvZNbshptzohn1K8BP5SZ3q/kHXbrp4ziwrCX0RCGix52aGhTjy3xCfjYy2sLmeMBXaF8g9yuWr/EkV/dmPfw8T7m+q8Vt2FVMxRp3ARCPfHtGj66veo8kwSrr5IIJqhTTwra4PE=
   local_dir: dpl_cd_upload
   skip_cleanup: true
   bucket: octoblu-deploy
   on:
     branch: master
 - provider: codedeploy
-  access_key_id: AKIAIT4X4NDGM2WVL6VA
+  access_key_id: AKIAJH2D5IPIRHYJT5IA
   secret_access_key: *1
   bucket: octoblu-deploy
   key: docker-builder/triggers-service-$TRAVIS_COMMIT.zip
