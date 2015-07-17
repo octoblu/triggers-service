@@ -1,0 +1,21 @@
+[Unit]
+Description=Healthcheck vulcand for octoblu-triggers-service
+After=docker.service
+
+[Service]
+EnvironmentFile=/etc/environment
+RemainAfterExit=yes
+ExecStart=/bin/sh -c "/usr/bin/echo 'Checking backends before switching vulcand' && \
+  /usr/bin/docker run --rm octoblu/triggers-healthcheck \
+    -e ETCDCTL_PEERS=http://$(ifconfig docker0 | grep 'inet ' | awk '{print $2}'):2379 \
+    octoblu triggers-service blue && \
+  /usr/bin/docker run --rm octoblu/vctl frontend upsert \
+    --id octoblu-triggers-service \
+    --backend octoblu-triggers-service-blue \
+    --route 'Host(\"$(etcdctl get /octoblu/triggers-service/host)\")' \
+    --vulcan http://$(ifconfig docker0 | grep 'inet ' | awk '{print $2}'):8182 && \
+  /usr/bin/etcdctl set /octoblu/triggers-service/active blue \
+"
+
+[X-Fleet]
+X-ConditionMachineOf=octoblu-triggers-service-blue@%i.service
