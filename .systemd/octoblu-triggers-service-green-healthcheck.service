@@ -1,6 +1,7 @@
 [Unit]
 Description=Healthcheck vulcand for octoblu-triggers-service
 After=docker.service
+Requires=docker.service
 
 [Service]
 EnvironmentFile=/etc/environment
@@ -18,4 +19,4 @@ ExecStart=/bin/sh -c "/usr/bin/echo 'Checking backends before switching vulcand'
 "
 
 [X-Fleet]
-X-ConditionMachineOf=octoblu-triggers-service-green@%i.service
+MachineMetadata=Services=true
