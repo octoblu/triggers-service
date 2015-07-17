@@ -1,0 +1,5 @@
+.git
+.kubernetes
+.systemd
+node_modules
+test
