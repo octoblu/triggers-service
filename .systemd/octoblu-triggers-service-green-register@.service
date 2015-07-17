@@ -1,0 +1,30 @@
+[Unit]
+Description=Register with vulcand for octoblu-triggers-service
+BindsTo=octoblu-triggers-service-green@%i.service
+After=octoblu-triggers-service-green@%i.service
+
+[Service]
+EnvironmentFile=/etc/environment
+RemainAfterExit=yes
+ExecStart=/bin/sh -c "/usr/bin/echo 'Adding backend, server, and frontend to vulcand' && \
+  /usr/bin/docker run --rm octoblu/vctl backend upsert \
+    --id octoblu-triggers-service-green \
+    --vulcan http://$(ifconfig docker0 | grep 'inet ' | awk '{print $2}'):8182 && \
+  /usr/bin/docker run --rm octoblu/vctl server upsert \
+    --id octoblu-triggers-service-green-%i \
+    --backend octoblu-triggers-service-green \
+    --url http://${COREOS_PUBLIC_IPV4}:$(/usr/bin/etcdctl get /octoblu/triggers-service/green/port) \
+    --vulcan http://$(ifconfig docker0 | grep 'inet ' | awk '{print $2}'):8182 && \
+  /usr/bin/docker run --rm octoblu/vctl frontend upsert \
+    --id triggers-service \
+    --backend octoblu-triggers-service-green \
+    --route 'Host(\"triggers.octoblu.com\")' \
+    --vulcan http://$(ifconfig docker0 | grep 'inet ' | awk '{print $2}'):8182 && \
+  /usr/bin/etcdctl set /octoblu/triggers-service/active green \
+"
+
+ExecStop=/bin/sh -c "/usr/bin/echo 'Removing server from vulcand' && \
+  /usr/bin/docker run --rm octoblu/vctl server rm --id octoblu-triggers-service-green-%i --vulcan http://$(ifconfig docker0 | grep 'inet ' | awk '{print $2}'):8182"
+
+[X-Fleet]
+X-ConditionMachineOf=octoblu-triggers-service-green@%i.service
