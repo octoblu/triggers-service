@@ -32,8 +32,18 @@ kubectl delete rc -lname=triggers-service-${NEW_COLOR}
 kubectl delete pods -lname=triggers-service-${NEW_COLOR}
 kubectl create -f $SCRIPT_DIR/triggers-service-${NEW_COLOR}-controller.yaml
 
+x=0
+while [ "$x" -lt 20 -a -z "$KUBE_STATUS" ]; do
+   x=$((x+1))
+   sleep 10
+   echo "Checking kubectl status, attempt ${x}..."
+   KUBE_STATUS=`kubectl get pod -o json -lname=triggers-service-${NEW_COLOR} | jq ".items[].currentState.info[\"triggers-service-${NEW_COLOR}\"].ready" | uniq | grep true`
+done
 
-sleep 30
+if [ -z "$KUBE_STATUS" ]; then
+  echo "triggers-service-${NEW_COLOR} is not ready, giving up."
+  exit 1
+fi
 
 AWS_DEFAULT_REGION=us-west-2 aws elb delete-load-balancer-listeners --load-balancer-name triggers-octoblu-com --load-balancer-ports 80
 AWS_DEFAULT_REGION=us-west-2 aws elb delete-load-balancer-listeners --load-balancer-name triggers-octoblu-com --load-balancer-ports 443
