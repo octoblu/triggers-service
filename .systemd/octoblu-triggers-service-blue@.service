@@ -1,5 +1,5 @@
 [Unit]
-Description=triggers-service blue
+Description=octoblu-triggers-service-blue
 After=docker.service
 Requires=docker.service
 
@@ -16,13 +16,15 @@ ExecStartPre=/usr/bin/etcdctl get /meshblu/port || /usr/bin/echo "etcd did not c
 ExecStartPre=/usr/bin/etcdctl get /octoblu/triggers-service/blue/port || /usr/bin/echo "etcd did not contain /octoblu/triggers-service/blue/port" && exit 1
 ExecStartPre=/usr/bin/etcdctl get /octoblu/triggers-service/blue/docker_url || /usr/bin/echo "etcd did not contain /octoblu/triggers-service/blue/docker_url" && exit 1
 ExecStartPre=-/usr/bin/docker rm octoblu-triggers-service-blue-%i
-ExecStart=/bin/sh -c '/usr/bin/docker run --rm \
+ExecStart=/bin/sh -c "/usr/bin/docker run --rm \
   --name octoblu-triggers-service-blue-%i \
   -e DEBUG=triggers-service* \
+  -e FLEETCTL_ENDPOINT=http://$(ifconfig docker0 | grep 'inet ' | awk '{print $2}'):2379 \
   -p $(/usr/bin/etcdctl get /octoblu/triggers-service/blue/port):80 \
   -e MESHBLU_HOST=$(/usr/bin/etcdctl get /meshblu/host) \
   -e MESHBLU_PORT=$(/usr/bin/etcdctl get /meshblu/port) \
-  $(/usr/bin/etcdctl get /octoblu/triggers-service/blue/docker_url)'
+  $(/usr/bin/etcdctl get /octoblu/triggers-service/blue/docker_url) \
+"
 
 [Install]
 WantedBy=multi-user.target
