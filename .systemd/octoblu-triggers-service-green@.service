@@ -19,10 +19,12 @@ ExecStartPre=-/usr/bin/docker rm octoblu-triggers-service-green-%i
 ExecStart=/bin/sh -c "/usr/bin/docker run --rm \
   --name octoblu-triggers-service-green-%i \
   -e DEBUG=triggers-service* \
-  -e FLEETCTL_ENDPOINT=http://$(ifconfig docker0 | grep 'inet ' | awk '{print $2}'):2379 \
-  -p $(/usr/bin/etcdctl get /octoblu/triggers-service/green/port):80 \
   -e MESHBLU_HOST=$(/usr/bin/etcdctl get /meshblu/host) \
   -e MESHBLU_PORT=$(/usr/bin/etcdctl get /meshblu/port) \
+  -e MESHBLU_PROTOCOL=$(/usr/bin/etcdctl get /meshblu/protocol) \
+  -e TRIGGER_SERVICE_UUID=$(/usr/bin/etcdctl get /octoblu/triggers-service/uuid) \
+  -e TRIGGER_SERVICE_TOKEN=$(/usr/bin/etcdctl get /octoblu/triggers-service/token) \
+  -p $(/usr/bin/etcdctl get /octoblu/triggers-service/green/port):80 \
   $(/usr/bin/etcdctl get /octoblu/triggers-service/green/docker_url) \
 "
 
