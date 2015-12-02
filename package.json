@@ -1,6 +1,6 @@
 {
   "name": "triggers-service",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -27,7 +27,7 @@
     "express-meshblu-auth": "^1.1.4",
     "express-meshblu-healthcheck": "^1.0.0",
     "lodash": "^3.6.0",
-    "meshblu-http": "^2.0.0",
+    "meshblu-http": "^3.6.0",
     "request": "^2.54.0"
   }
 }

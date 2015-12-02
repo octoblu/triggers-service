@@ -9,7 +9,7 @@ bodyParser = require 'body-parser'
 MESHBLU_HOST          = process.env.MESHBLU_HOST || 'meshblu.octoblu.com'
 MESHBLU_PORT          = process.env.MESHBLU_PORT || '443'
 MESHBLU_PROTOCOL      = process.env.MESHBLU_PROTOCOL || 'https'
-TRIGGER_SERVICE_PORT  = process.env.TRIGGER_SERVICE_PORT || 80
+TRIGGER_SERVICE_PORT  = process.env.TRIGGER_SERVICE_PORT || process.env.PORT || 80
 TRIGGER_SERVICE_UUID  = process.env.TRIGGER_SERVICE_UUID
 TRIGGER_SERVICE_TOKEN = process.env.TRIGGER_SERVICE_TOKEN
 
@@ -45,9 +45,7 @@ app.use '/flows/:flowId/triggers/:triggerId', (request, response, next) ->
   {uuid, token} = request.meshbluAuth ? defaultAuth
   return response.status(401).end() unless uuid? && token?
   meshbluAuthExpress.authDeviceWithMeshblu uuid, token, (error) ->
-    if error?
-      console.error error
-      return response.status(401).end()
+    return response.status(error.code ? 500).send(error.message) if error?
     next()
 
 app.options '*', cors()

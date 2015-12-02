@@ -1,4 +1,4 @@
-Meshblu      = require 'meshblu-http'
+MeshbluHttp      = require 'meshblu-http'
 TriggerModel = require './trigger-model'
 _            = require 'lodash'
 debug        = require('debug')('triggers-service:trigger-controller')
@@ -15,7 +15,7 @@ class TriggerController
       token: process.env.TRIGGER_SERVICE_TOKEN
 
     meshbluConfig = _.extend {}, defaultAuth, request.meshbluAuth, @meshbluOptions
-    meshblu = new Meshblu meshbluConfig
+    meshblu = new MeshbluHttp meshbluConfig
     message =
       devices: [flowId]
       topic: 'triggers-service'
@@ -27,15 +27,15 @@ class TriggerController
 
     meshblu.message message, (error, body) =>
       return response.status(401).json(error: 'unauthorized') if error?.message == 'unauthorized'
-      return response.status(500).end() if error?
+      return response.status(error.code ? 500).send(error.message) if error?
       return response.status(201).json(body)
 
   getTriggers: (request, response) =>
     meshbluConfig = _.extend request.meshbluAuth, @meshbluOptions
-    meshblu = new Meshblu meshbluConfig
+    meshblu = new MeshbluHttp meshbluConfig
     meshblu.devices type: 'octoblu:flow', (error, body) =>
       return response.status(401).json(error: 'unauthorized') if error?.message == 'unauthorized'
-      return response.status(500).end() if error?
+      return response.status(error.code ? 500).send(error.message) if error?
 
       triggers = @triggerModel.parseTriggersFromDevices body.devices
       return response.status(200).json(triggers)
@@ -43,10 +43,10 @@ class TriggerController
   getMyTriggers: (request, response) =>
     meshbluAuth = request.meshbluAuth ? {}
     meshbluConfig = _.extend meshbluAuth, @meshbluOptions
-    meshblu = new Meshblu meshbluConfig
+    meshblu = new MeshbluHttp meshbluConfig
     meshblu.devices type: 'octoblu:flow', owner: meshbluConfig.uuid, (error, body) =>
       return response.status(401).json(error: 'unauthorized') if error?.message == 'unauthorized'
-      return response.status(500).end() if error?
+      return response.status(error.code ? 500).send(error.message) if error?
 
       triggers = @triggerModel.parseTriggersFromDevices body.devices
       return response.status(200).json(triggers)
