@@ -31,7 +31,8 @@ class TriggerController
       return response.status(201).json(body)
 
   getTriggers: (request, response) =>
-    meshbluConfig = _.extend request.meshbluAuth, @meshbluOptions
+    meshbluAuth = request.meshbluAuth ? {}
+    meshbluConfig = _.defaults meshbluAuth, @meshbluOptions
     meshblu = new MeshbluHttp meshbluConfig
     meshblu.devices type: 'octoblu:flow', (error, body) =>
       return response.status(401).json(error: 'unauthorized') if error?.message == 'unauthorized'
@@ -42,7 +43,7 @@ class TriggerController
 
   getMyTriggers: (request, response) =>
     meshbluAuth = request.meshbluAuth ? {}
-    meshbluConfig = _.extend meshbluAuth, @meshbluOptions
+    meshbluConfig = _.defaults meshbluAuth, @meshbluOptions
     meshblu = new MeshbluHttp meshbluConfig
     meshblu.devices type: 'octoblu:flow', owner: meshbluConfig.uuid, (error, body) =>
       return response.status(401).json(error: 'unauthorized') if error?.message == 'unauthorized'
