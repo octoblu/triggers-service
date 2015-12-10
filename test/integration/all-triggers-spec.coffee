@@ -4,7 +4,7 @@ shmock  = require 'shmock'
 Server  = require '../../src/server'
 fakeFlow = require './fake-flow.json'
 
-describe 'GET /mytriggers', ->
+describe 'GET /all-triggers', ->
   beforeEach ->
     @meshblu = shmock 0xf00d
 
@@ -43,10 +43,10 @@ describe 'GET /mytriggers', ->
       .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
 
     @getHandler = @meshblu.get('/devices')
-      .query(type:'octoblu:flow', owner:'ai-turns-hostile')
+      .query(type:'octoblu:flow')
       .reply 200, devices: [fakeFlow]
 
-    request.get "http://localhost:#{@serverPort}/mytriggers", options, (error, @response, @body) =>
+    request.get "http://localhost:#{@serverPort}/all-triggers", options, (error, @response, @body) =>
       done error
 
   it 'should return the triggers', ->

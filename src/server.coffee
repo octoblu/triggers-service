@@ -28,8 +28,7 @@ class Server
 
     app.options '*', cors()
 
-    router = new Router
-      meshbluConfig: @meshbluConfig
+    router = new Router {@meshbluConfig}
     router.route app
 
     @server = app.listen @port, callback
