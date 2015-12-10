@@ -51,7 +51,7 @@ describe 'POST /flows/:flowId/triggers/:triggerId', ->
       request.post "http://localhost:#{@serverPort}/flows/foo/triggers/bar", options, (error, @response, @body) =>
         done error
 
-    it 'should return the triggers', ->
+    it 'should send a message', ->
       expect(@response.statusCode).to.equal 201
       expect(@postHandler.isDone).to.be.true
 
@@ -69,6 +69,6 @@ describe 'POST /flows/:flowId/triggers/:triggerId', ->
       request.post "http://localhost:#{@serverPort}/flows/foo/triggers/bar", options, (error, @response, @body) =>
         done error
 
-    it 'should return the triggers', ->
+    it 'should send a message', ->
       expect(@response.statusCode).to.equal 201
       expect(@postHandler.isDone).to.be.true
