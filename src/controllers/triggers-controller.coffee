@@ -44,6 +44,6 @@ class TriggersController
     meshbluHttp.message message, (error, body) =>
       return res.status(401).json(error: 'unauthorized') if error?.message == 'unauthorized'
       return res.status(error.code ? 500).send(error.message) if error?
-      return res.status(201).json(body)
+      return res.status(201).json(body ? {})
 
 module.exports = TriggersController
