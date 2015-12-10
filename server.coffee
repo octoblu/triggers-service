@@ -1,6 +1,4 @@
 express = require 'express'
-meshbluAuth = require 'express-meshblu-auth'
-MeshbluAuthExpress = require 'express-meshblu-auth/src/meshblu-auth-express'
 meshbluHealthcheck = require 'express-meshblu-healthcheck'
 TriggerController = require './trigger-controller'
 cors = require 'cors'

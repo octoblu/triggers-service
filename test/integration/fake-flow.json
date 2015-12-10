@@ -1,0 +1,174 @@
+{
+  "uuid": "5c7cd421-8896-4073-92ee-2acd6e0171b5",
+  "online": true,
+  "owner": "bce2067e-1b84-478b-abf2-d2a4a8823611",
+  "type": "octoblu:flow",
+  "sendWhitelist": [
+    "bce2067e-1b84-478b-abf2-d2a4a8823611",
+    "9b47c2f1-9d9b-11e3-a443-ab1cdce04787",
+    "b560b6ee-c264-4ed9-b98e-e3376ce6ce64"
+  ],
+  "receiveWhitelist": [
+    "bce2067e-1b84-478b-abf2-d2a4a8823611",
+    "9b47c2f1-9d9b-11e3-a443-ab1cdce04787"
+  ],
+  "configureWhitelist": [
+    "bce2067e-1b84-478b-abf2-d2a4a8823611"
+  ],
+  "ipAddress": "52.35.14.112",
+  "discoverWhitelist": [
+    "bce2067e-1b84-478b-abf2-d2a4a8823611"
+  ],
+  "geo": {
+    "range": [
+      872415232,
+      880877567
+    ],
+    "country": "US",
+    "region": "DE",
+    "city": "Wilmington",
+    "ll": [
+      39.5645,
+      -75.597
+    ],
+    "metro": 504
+  },
+  "meshblu": {
+    "hash": "A5WYIh4IyDDmp5FvM11l1WKAlqs5ppJ3BruKSpk6yEU=",
+    "tokens": {
+      "SsblC/op7dfS6yJUNUN6rXGwq9FgB/+eleQkIdoDsq4=": {
+        "createdAt": "2015-12-10T00:52:58.932Z"
+      }
+    },
+    "messageHooks": [
+      {
+        "url": "https://nanocyte-engine.octoblu.com/flows/5c7cd421-8896-4073-92ee-2acd6e0171b5/instances/38c5c8fd-c778-4840-bc9f-1ba045ece34d/messages",
+        "method": "POST",
+        "signRequest": true,
+        "name": "nanocyte-flow-deploy"
+      }
+    ]
+  },
+  "deploying": false,
+  "stopping": false,
+  "messageSchema": {
+    "type": "object",
+    "properties": {
+      "from": {
+        "type": "string",
+        "title": "Trigger",
+        "required": true,
+        "enum": [
+          "562f4090-9ed8-11e5-bf39-09fc31cb0cf0"
+        ]
+      }
+    }
+  },
+  "messageFormSchema": [
+    {
+      "key": "from",
+      "titleMap": {
+        "562f4090-9ed8-11e5-bf39-09fc31cb0cf0": "GOOYAH (562f4090)"
+      }
+    }
+  ],
+  "flow": {
+    "_id": "5668ccde8a6b07010083ce76",
+    "flowId": "5c7cd421-8896-4073-92ee-2acd6e0171b5",
+    "token": "05744cf8d653e93ff71510c7050a752f42707c04",
+    "name": "Flow 5c7cd421",
+    "description": null,
+    "resource": {
+      "nodeType": "flow",
+      "owner": {
+        "uuid": "bce2067e-1b84-478b-abf2-d2a4a8823611",
+        "nodeType": "user"
+      }
+    },
+    "hash": "6918b8dd",
+    "nodes": [
+      {
+        "id": "562f4090-9ed8-11e5-bf39-09fc31cb0cf0",
+        "resourceType": "flow-node",
+        "payloadType": "date",
+        "once": false,
+        "name": "GOOYAH",
+        "class": "trigger",
+        "helpText": "Send a static message. Can also be triggered from other flows",
+        "category": "operation",
+        "uuid": "37f0a74a-2f17-11e4-9617-a6c5e4d22fb7",
+        "type": "operation:trigger",
+        "defaults": {
+          "payloadType": "date",
+          "once": false
+        },
+        "input": 0,
+        "output": 1,
+        "formTemplatePath": "/pages/node_forms/button_form.html",
+        "nanocyte": {
+          "name": "nanocyte-node-trigger",
+          "composedOf": {
+            "trigger-node": {
+              "type": "nanocyte-node-trigger",
+              "linkedToNext": true,
+              "linkedToInput": true
+            }
+          },
+          "nonce": "057e6302-cfb6-41f8-a62d-5d9b530a54b5"
+        },
+        "logo": "https://ds78apnml6was.cloudfront.net/operation/trigger.svg",
+        "inputLocations": [],
+        "outputLocations": [],
+        "x": 295,
+        "y": 520
+      },
+      {
+        "id": "2b9ad4a0-adb8-41d2-8316-22bc47b1308d",
+        "category": "flow-metrics",
+        "flowUuid": "5c7cd421-8896-4073-92ee-2acd6e0171b5",
+        "deviceId": "f952aacb-5156-4072-bcae-f830334376b1",
+        "deploymentUuid": "5b1b79c0-9ed8-11e5-bf39-09fc31cb0cf0",
+        "nanocyte": {
+          "nonce": "a0b88007-06dd-40d2-9d02-f2715ae00b0e"
+        }
+      }
+    ],
+    "links": [],
+    "deployed": false,
+    "selectedFlowNode": {
+      "id": "562f4090-9ed8-11e5-bf39-09fc31cb0cf0",
+      "resourceType": "flow-node",
+      "payloadType": "date",
+      "once": false,
+      "name": "GOOYAH",
+      "class": "trigger",
+      "helpText": "Send a static message. Can also be triggered from other flows",
+      "category": "operation",
+      "uuid": "37f0a74a-2f17-11e4-9617-a6c5e4d22fb7",
+      "type": "operation:trigger",
+      "defaults": {
+        "payloadType": "date",
+        "once": false
+      },
+      "input": 0,
+      "output": 1,
+      "formTemplatePath": "/pages/node_forms/button_form.html",
+      "nanocyte": {
+        "name": "nanocyte-node-trigger",
+        "composedOf": {
+          "trigger-node": {
+            "type": "nanocyte-node-trigger",
+            "linkedToNext": true,
+            "linkedToInput": true
+          }
+        }
+      },
+      "logo": "https://ds78apnml6was.cloudfront.net/operation/trigger.svg",
+      "inputLocations": [],
+      "outputLocations": [],
+      "x": 295,
+      "y": 520
+    },
+    "activated": true
+  }
+}
