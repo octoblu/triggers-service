@@ -15,6 +15,8 @@ describe 'GET /flows/:flowId/triggers/:triggerId', ->
     meshbluConfig =
       server: 'localhost'
       port: 0xf00d
+      uuid: 'trigger-service-uuid'
+      token: 'trigger-service-token'
 
     serverOptions =
       port: undefined,
@@ -30,12 +32,43 @@ describe 'GET /flows/:flowId/triggers/:triggerId', ->
   afterEach (done) ->
     @server.stop => done()
 
-  beforeEach (done) ->
-    options =
-      json: true
+  context 'when authed', ->
+    beforeEach (done) ->
+      auth =
+        username: 'ai-turns-hostile'
+        password: 'team-token'
 
-    request.get "http://localhost:#{@serverPort}/flows/test/triggers/foo", options, (error, @response, @body) =>
-      done error
+      options =
+        auth: auth
+        json: true
 
-  it 'should return the triggers', ->
-    expect(@response.statusCode).to.equal 405
+      @meshblu.get('/v2/whoami')
+        .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
+
+      @postHandler = @meshblu.post('/messages')
+        .reply 201
+
+      request.get "http://localhost:#{@serverPort}/flows/foo/triggers/bar", options, (error, @response, @body) =>
+        done error
+
+    it 'should return the triggers', ->
+      expect(@response.statusCode).to.equal 201
+      expect(@postHandler.isDone).to.be.true
+
+  context 'when not authed', ->
+    beforeEach (done) ->
+      options =
+        json: true
+
+      @meshblu.get('/v2/whoami')
+        .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
+
+      @postHandler = @meshblu.post('/messages')
+        .reply 201
+
+      request.post "http://localhost:#{@serverPort}/flows/foo/triggers/bar", options, (error, @response, @body) =>
+        done error
+
+    it 'should return the triggers', ->
+      expect(@response.statusCode).to.equal 201
+      expect(@postHandler.isDone).to.be.true
