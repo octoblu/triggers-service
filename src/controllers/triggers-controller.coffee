@@ -39,7 +39,7 @@ class TriggersController
       topic: 'triggers-service'
       payload:
         from: triggerId
-        params: _.extend {}, req.body, req.query
+        params: req.body
 
     meshbluHttp.message message, (error, body) =>
       return res.status(401).json(error: 'unauthorized') if error?.message == 'unauthorized'
