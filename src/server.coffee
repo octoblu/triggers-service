@@ -24,8 +24,8 @@ class Server
     app.use cors()
     app.use errorHandler()
     app.use meshbluHealthcheck()
-    # app.use multer().any()
-    app.use bodyParser.raw type: 'multipart/form-data', limit: '50mb', extended: true
+    app.use multer().any()
+    # app.use bodyParser.raw type: 'multipart/form-data', limit: '50mb', extended: true
     app.use bodyParser.urlencoded limit: '50mb', extended : true, defer: true
     app.use bodyParser.json limit : '50mb', defer: true
 

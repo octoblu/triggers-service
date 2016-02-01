@@ -2,6 +2,7 @@ http    = require 'http'
 request = require 'request'
 shmock  = require 'shmock'
 Server  = require '../../src/server'
+fs = require 'fs'
 fakeFlow = require './fake-flow.json'
 
 describe 'POST /flows/:flowId/triggers/:triggerId', ->
@@ -33,27 +34,75 @@ describe 'POST /flows/:flowId/triggers/:triggerId', ->
     @server.stop => done()
 
   context 'when authed', ->
-    beforeEach (done) ->
-      auth =
-        username: 'ai-turns-hostile'
-        password: 'team-token'
+    context 'when posting json', ->
+      beforeEach (done) ->
+        auth =
+          username: 'ai-turns-hostile'
+          password: 'team-token'
 
-      options =
-        auth: auth
-        json: true
+        options =
+          auth: auth
+          json: true
 
-      @meshblu.get('/v2/whoami')
-        .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
+        @meshblu.get('/v2/whoami')
+          .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
 
-      @postHandler = @meshblu.post('/messages')
-        .reply 201
+        @postHandler = @meshblu.post('/messages')
+          .reply 201
 
-      request.post "http://localhost:#{@serverPort}/flows/foo/triggers/bar", options, (error, @response, @body) =>
-        done error
+        request.post "http://localhost:#{@serverPort}/flows/foo/triggers/bar", options, (error, @response, @body) =>
+          done error
 
-    it 'should return the triggers', ->
-      expect(@response.statusCode).to.equal 201
-      expect(@postHandler.isDone).to.be.true
+      it 'should return the triggers', ->
+        expect(@response.statusCode).to.equal 201
+        expect(@postHandler.isDone).to.be.true
+
+    context 'when posting a multipart form', ->
+      beforeEach (done) ->
+        auth =
+          username: 'ai-turns-hostile'
+          password: 'team-token'
+
+        formData =
+          custom_file:
+            value: new Buffer('{foo: bar}')
+            options:
+              filename: 'somefile',
+              contentType: 'application/json'
+
+        options =
+          auth: auth
+          formData: formData
+
+        @meshblu.get('/v2/whoami')
+          .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
+
+
+        message =
+          devices: [ 'foo' ]
+          topic: 'triggers-service'
+          payload:
+            from: 'bar'
+            params: {}
+            files:
+              somefile:
+                mimeType: 'application/json'
+                data: '{foo: bar}'
+                fieldName: 'custom_file'
+                originalName: 'somefile'
+                encoding: '7bit'
+                size: 10
+
+        @postHandler = @meshblu.post('/messages')
+          .send message
+          .reply 201
+
+        request.post "http://localhost:#{@serverPort}/flows/foo/triggers/bar", options, (error, @response, @body) =>
+          done error
+
+      it 'should return the triggers', ->
+        expect(@response.statusCode).to.equal 201
+        expect(@postHandler.isDone).to.be.true
 
   context 'when not authed', ->
     beforeEach (done) ->
