@@ -1,4 +1,5 @@
 _ = require 'lodash'
+typeIs = require 'type-is'
 MeshbluHttp = require 'meshblu-http'
 TriggerParser = require '../helpers/trigger-parser'
 
@@ -33,6 +34,12 @@ class TriggersController
     meshbluAuth = req.meshbluAuth ? {}
     meshbluConfig = _.defaults meshbluAuth, @meshbluConfig
     meshbluHttp = new MeshbluHttp meshbluConfig
+
+    if typeIs req, ['multipart/form-data']
+      _.each req.body, (value, key) =>
+        try
+          req.body[key] = JSON.parse value
+        catch error
 
     message =
       devices: [flowId]

@@ -8,6 +8,7 @@ meshbluAuth = require 'express-meshblu-auth'
 MeshbluAuthExpress = require 'express-meshblu-auth/src/meshblu-auth-express'
 debug              = require('debug')('triggers-service:server')
 Router             = require './router'
+multer             = require 'multer'
 
 class Server
   constructor: (options)->
@@ -23,8 +24,9 @@ class Server
     app.use cors()
     app.use errorHandler()
     app.use meshbluHealthcheck()
-    app.use bodyParser.urlencoded limit: '50mb', extended : true
-    app.use bodyParser.json limit : '50mb'
+    app.use multer().any()
+    app.use bodyParser.urlencoded limit: '50mb', extended : true, defer: true
+    app.use bodyParser.json limit : '50mb', defer: true
 
     app.options '*', cors()
 

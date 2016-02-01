@@ -18,7 +18,6 @@ class Router
 
     app.post '/flows/:flowId/triggers/:triggerId', @_conditionalAuth, @triggersController.sendMessage
 
-
   _conditionalAuth: (req, res, next) =>
     meshbluAuthExpress = new MeshbluAuthExpress @meshbluConfig
     meshbluAuthExpress.getFromAnywhere req
