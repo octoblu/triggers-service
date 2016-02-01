@@ -2,6 +2,7 @@ _ = require 'lodash'
 typeIs = require 'type-is'
 MeshbluHttp = require 'meshblu-http'
 TriggerParser = require '../helpers/trigger-parser'
+debug = require('debug')('triggers-service:triggers-controller')
 
 class TriggersController
   constructor: ({@meshbluConfig}) ->
@@ -30,6 +31,8 @@ class TriggersController
 
   sendMessage: (req, res) =>
     {flowId, triggerId} = req.params
+
+    debug 'sendMessage', req.header('Content-Type'), req.body?.toString()
 
     meshbluAuth = req.meshbluAuth ? {}
     meshbluConfig = _.defaults meshbluAuth, @meshbluConfig
