@@ -8,11 +8,3 @@ before_script:
 - npm install -g codeclimate-test-reporter
 after_script:
 - codeclimate-test-reporter < coverage/lcov.info
-deploy:
-  provider: npm
-  email: serveradmin@octoblu.com
-  api_key:
-    secure: B7j8p95D5YtTDZ0Mc75l/Ir2AQYeVbMh262O9lRE4eSCo8m2lkZCXI/A3TA4XbxCxBvw6N4VNnXzTKo45kUQK/iqYiUfptTYbCCQJY7xulccs/fAjjISop+4/g7/Rgp1i5T7+dIFtOo8IyTGfiqS2kFXj92VwO/+oX0XVYXwnHY=
-  on:
-    tags: true
-    branches: true
