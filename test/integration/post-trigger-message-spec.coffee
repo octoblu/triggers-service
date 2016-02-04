@@ -84,6 +84,7 @@ describe 'POST /flows/:flowId/triggers/:triggerId', ->
           payload:
             from: 'bar'
             params: {}
+            payload: {}
             files:
               somefile:
                 mimeType: 'application/json'

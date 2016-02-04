@@ -46,6 +46,7 @@ class TriggersController
       payload:
         from: triggerId
         params: req.body
+        payload: req.body
         files: uploadedFiles
 
     meshbluHttp.message message, (error, body) =>
