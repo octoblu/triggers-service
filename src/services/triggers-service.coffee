@@ -25,45 +25,35 @@ class TriggersService
       triggers = TriggerParser.parseTriggersFromDevices body.devices
       callback null, triggers
 
-  sendMessageById: ({flowId,triggerId,body,uploadedFiles}, callback) =>
+  sendMessageById: ({flowId,triggerId,body,uploadedFiles,defaultPayload}, callback) =>
     meshbluHttp = new MeshbluHttp @meshbluConfig
+
+    payloadOptions =
+      from: triggerId
+      params: body
+      payload: body
+      files: uploadedFiles
+
+    payload = _.extend {}, defaultPayload, payloadOptions
 
     message =
       devices: [flowId]
       topic: 'triggers-service'
-      payload:
-        from: triggerId
-        params: body
-        payload: body
-        files: uploadedFiles
+      payload: payload
 
     meshbluHttp.message message, (error, body) =>
       return callback @_createError 401, error.message if error?.message == 'unauthorized'
       return callback @_createError 500, error.message if error?
       return callback null
 
-  sendMessageByName: ({triggerName,body,uploadedFiles}, callback) =>
+  sendMessageByName: ({triggerName,body,uploadedFiles,defaultPayload}, callback) =>
     @myTriggers (error, triggers) =>
       return callback error if error?
       trigger = _.find triggers, name: triggerName
       return callback @_createError 404, 'No Trigger by that name' unless trigger?
 
-      meshbluHttp = new MeshbluHttp @meshbluConfig
-      {flowId, id} = trigger
-
-      message =
-        devices: [flowId]
-        topic: 'triggers-service'
-        payload:
-          from: id
-          params: body
-          payload: body
-          files: uploadedFiles
-
-      meshbluHttp.message message, (error, body) =>
-        return callback @_createError 401, error.message if error?.message == 'unauthorized'
-        return callback @_createError 500, error.message if error?
-        return callback null
+      {id,flowId} = trigger
+      @sendMessageById {flowId,triggerId:id,body,uploadedFiles,defaultPayload}, callback
 
   _createError: (code, message) =>
     error = new Error message
