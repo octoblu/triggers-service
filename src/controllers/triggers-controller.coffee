@@ -1,64 +1,58 @@
-_ = require 'lodash'
-typeIs = require 'type-is'
-MeshbluHttp = require 'meshblu-http'
-TriggerParser = require '../helpers/trigger-parser'
-debug = require('debug')('triggers-service:triggers-controller')
-randomstring = require 'randomstring'
+TriggersService = require '../services/triggers-service'
+_               = require 'lodash'
+typeIs          = require 'type-is'
+debug           = require('debug')('triggers-service:triggers-controller')
 
 class TriggersController
   constructor: ({@meshbluConfig}) ->
 
-  allTriggers: (req, res) =>
-    meshbluAuth = req.meshbluAuth ? {}
-    meshbluConfig = _.defaults meshbluAuth, @meshbluConfig
-    meshbluHttp = new MeshbluHttp meshbluConfig
-    meshbluHttp.devices type: 'octoblu:flow', (error, body) =>
-      return res.status(401).json(error: 'unauthorized') if error?.message == 'unauthorized'
-      return res.status(error.code ? 500).send(error.message) if error?
+  allTriggers: (request, response) =>
+    triggersService = new TriggersService {meshbluConfig: request.meshbluAuth}
 
-      triggers = TriggerParser.parseTriggersFromDevices body.devices
-      return res.status(200).json(triggers)
+    triggersService.allTriggers (error, triggers) =>
+      return response.status(error.code || 500).send error: error if error?
+      response.status(200).send triggers
 
-  myTriggers: (req, res) =>
-    meshbluAuth = req.meshbluAuth ? {}
-    meshbluConfig = _.defaults meshbluAuth, @meshbluConfig
-    meshbluHttp = new MeshbluHttp meshbluConfig
-    meshbluHttp.devices type: 'octoblu:flow', owner: meshbluConfig.uuid, (error, body) =>
-      return res.status(401).json(error: 'unauthorized') if error?.message == 'unauthorized'
-      return res.status(error.code ? 500).send(error.message) if error?
+  myTriggers: (request, response) =>
+    triggersService = new TriggersService {meshbluConfig: request.meshbluAuth}
 
-      triggers = TriggerParser.parseTriggersFromDevices body.devices
-      return res.status(200).json(triggers)
+    triggersService.myTriggers (error, triggers) =>
+      return response.status(error.code || 500).send error: error if error?
+      response.status(200).send triggers
 
-  sendMessage: (req, res) =>
-    {flowId, triggerId} = req.params
+  sendMessageById: (request, response) =>
+    {flowId, triggerId} = request.params
+    {body} = request
 
-    debug 'sendMessage', req.header('Content-Type'), req.body
+    debug 'sendMessageById', request.header('Content-Type'), request.body
 
-    meshbluAuth = req.meshbluAuth ? {}
-    meshbluConfig = _.defaults meshbluAuth, @meshbluConfig
-    meshbluHttp = new MeshbluHttp meshbluConfig
+    triggersService = new TriggersService {@meshbluConfig}
 
-    uploadedFiles = @_handleFiles req
-    message =
-      devices: [flowId]
-      topic: 'triggers-service'
-      payload:
-        from: triggerId
-        params: req.body
-        payload: req.body
-        files: uploadedFiles
+    uploadedFiles = @_handleFiles request
 
-    meshbluHttp.message message, (error, body) =>
-      return res.status(401).json(error: 'unauthorized') if error?.message == 'unauthorized'
-      return res.status(error.code ? 500).send(error.message) if error?
-      return res.status(201).json(body)
+    triggersService.sendMessageById {flowId,triggerId,uploadedFiles,body}, (error) =>
+      return response.status(error.code || 500).send error: error if error?
+      response.sendStatus(201)
 
-  _handleFiles: (req) =>
-    return unless typeIs(req, ['multipart/form-data'])
-    return if _.isEmpty req.files
+  sendMessageByName: (request, response) =>
+    {triggerName} = request.params
+    {body} = request
+
+    debug 'sendMessageByName', request.header('Content-Type'), request.body
+
+    triggersService = new TriggersService {meshbluConfig: request.meshbluAuth}
+
+    uploadedFiles = @_handleFiles request
+
+    triggersService.sendMessageByName {triggerName,uploadedFiles,body}, (error) =>
+      return response.status(error.code || 500).send error: error if error?
+      response.sendStatus(201)
+
+  _handleFiles: (request) =>
+    return unless typeIs(request, ['multipart/form-data'])
+    return if _.isEmpty request.files
     uploadedFiles = {}
-    _.each req.files, (file) =>
+    _.each request.files, (file) =>
       buf = file.buffer.toString('utf8')
       if file.mimetype == 'application/json'
         try

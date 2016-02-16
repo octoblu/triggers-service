@@ -17,7 +17,8 @@ class Router
       res.status(405).send('Method Not Allowed: POST required')
 
     # app.post '/flows/:flowId/triggers/:triggerId', @_conditionalAuth, @triggersController.sendMessage
-    app.post '/flows/:flowId/triggers/:triggerId', @triggersController.sendMessage
+    app.post '/flows/:flowId/triggers/:triggerId', @triggersController.sendMessageById
+    app.post '/flows/triggers/:triggerName', @meshbluAuth, @triggersController.sendMessageByName
 
   _conditionalAuth: (req, res, next) =>
     meshbluAuthExpress = new MeshbluAuthExpress @meshbluConfig
