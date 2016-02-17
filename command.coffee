@@ -24,5 +24,10 @@ class Command
       {address,port} = server.address()
       console.log "Server listening on #{address}:#{port}"
 
+    process.on 'SIGTERM', =>
+      console.log 'SIGTERM caught, exiting'
+      server.stop =>
+        process.exit 0
+
 command = new Command()
 command.run()
