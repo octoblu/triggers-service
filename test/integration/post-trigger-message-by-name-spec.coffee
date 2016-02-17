@@ -51,7 +51,14 @@ describe 'POST /flows/triggers/:triggerName', ->
           .reply 201
 
         @getHandler = @meshblu.get('/devices')
-          .query(type:'octoblu:flow', owner:'ai-turns-hostile')
+          .query {
+            type: 'octoblu:flow'
+            owner: 'ai-turns-hostile'
+            'flow.nodes':
+              '$elemMatch':
+                name: 'GOOYAH'
+                type: 'operation:trigger'
+          }
           .reply 200, devices: [fakeFlow]
 
         request.post "http://localhost:#{@serverPort}/flows/triggers/GOOYAH", options, (error, @response, @body) =>
@@ -87,7 +94,14 @@ describe 'POST /flows/triggers/:triggerName', ->
           .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
 
         @getHandler = @meshblu.get('/devices')
-          .query(type:'octoblu:flow', owner:'ai-turns-hostile')
+          .query {
+            type: 'octoblu:flow'
+            owner: 'ai-turns-hostile'
+            'flow.nodes':
+              '$elemMatch':
+                name: 'GOOYAH'
+                type: 'operation:trigger'
+          }
           .reply 200, devices: [fakeFlow]
 
         message =
