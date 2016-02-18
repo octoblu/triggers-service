@@ -1,18 +1,19 @@
 _ = require 'lodash'
 
 class TriggerParser
-  @parseTriggersFromDevices: (devices) =>
+  @parseTriggersFromDevices: ({devices,type}) =>
     triggers = []
 
     return triggers unless devices?
 
     _.each devices, (device) =>
-      triggers = _.union triggers, TriggerParser.collectTriggersFromDevice(device)
+      triggers = _.union triggers, TriggerParser.collectTriggersFromDevice({device,type})
 
     triggers
 
-  @collectTriggersFromDevice: (device) =>
-    triggersInFlow = _.where device.flow?.nodes, { type: 'operation:trigger' }
+  @collectTriggersFromDevice: ({device, type}) =>
+    type ?= 'operation:trigger'
+    triggersInFlow = _.where device.flow?.nodes, {type}
 
     _.map triggersInFlow, (trigger) =>
       name: trigger.name

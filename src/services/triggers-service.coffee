@@ -21,7 +21,7 @@ class TriggersService
       return callback @_createError 401, error.message if error?.message == 'unauthorized'
       return callback @_createError 500, error.message if error?
 
-      triggers = TriggerParser.parseTriggersFromDevices body.devices
+      triggers = TriggerParser.parseTriggersFromDevices {devices: body.devices, type}
       callback null, triggers
 
   allTriggers: (callback) =>
@@ -30,7 +30,7 @@ class TriggersService
       return callback @_createError 401, error.message if error?.message == 'unauthorized'
       return callback @_createError 500, error.message if error?
 
-      triggers = TriggerParser.parseTriggersFromDevices body.devices
+      triggers = TriggerParser.parseTriggersFromDevices {devices: body.devices}
       callback null, triggers
 
   myTriggers: (callback) =>
@@ -39,7 +39,7 @@ class TriggersService
       return callback @_createError 401, error.message if error?.message == 'unauthorized'
       return callback @_createError 500, error.message if error?
 
-      triggers = TriggerParser.parseTriggersFromDevices body.devices
+      triggers = TriggerParser.parseTriggersFromDevices {devices: body.devices}
       callback null, triggers
 
   sendMessageById: ({flowId,triggerId,body,uploadedFiles,defaultPayload}, callback) =>
