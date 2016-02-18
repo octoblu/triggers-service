@@ -7,7 +7,8 @@ randomstring  = require 'randomstring'
 class TriggersService
   constructor: ({@meshbluConfig}) ->
 
-  getTriggerByNames: (name, callback) =>
+  getTriggerByNames: ({name, type}, callback) =>
+    type ?= 'operation:trigger'
     meshbluHttp = new MeshbluHttp @meshbluConfig
     query =
       type: 'octoblu:flow'
@@ -15,7 +16,7 @@ class TriggersService
       'flow.nodes':
         '$elemMatch':
           name: name
-          type: 'operation:trigger'
+          type: type
     meshbluHttp.devices query, (error, body) =>
       return callback @_createError 401, error.message if error?.message == 'unauthorized'
       return callback @_createError 500, error.message if error?
@@ -62,8 +63,8 @@ class TriggersService
       return callback @_createError 500, error.message if error?
       return callback null
 
-  sendMessageByName: ({triggerName,body,uploadedFiles,defaultPayload}, callback) =>
-    @getTriggerByNames triggerName, (error, triggers) =>
+  sendMessageByName: ({triggerName,body,uploadedFiles,defaultPayload,type}, callback) =>
+    @getTriggerByNames {name: triggerName, type: type}, (error, triggers) =>
       return callback error if error?
       trigger = _.find triggers, name: triggerName
       return callback @_createError 404, 'No Trigger by that name' unless trigger?
