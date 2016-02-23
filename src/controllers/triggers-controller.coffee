@@ -34,7 +34,7 @@ class TriggersController
 
     triggersService.sendMessageById {flowId,triggerId,uploadedFiles,body}, (error) =>
       return response.status(error.code || 500).send error: error if error?
-      response.sendStatus(201)
+      response.status(201).send triggered: true
 
   sendMessageByName: (request, response) =>
     {triggerName} = request.params
@@ -49,7 +49,7 @@ class TriggersController
 
     triggersService.sendMessageByName {triggerName,uploadedFiles,body,type}, (error) =>
       return response.status(error.code || 500).send error: error if error?
-      response.sendStatus(201)
+      response.status(201).send triggered: true
 
   _handleFiles: (request) =>
     return unless typeIs(request, ['multipart/form-data'])

@@ -59,6 +59,9 @@ describe 'POST /flows/:flowId/triggers/:triggerId', ->
       it 'should post the message', ->
         @postHandler.done()
 
+      it 'should respond with the triggered: true', ->
+        expect(@body.triggered).to.be.true
+
     context 'when posting a multipart form', ->
       beforeEach (done) ->
         auth =
@@ -109,6 +112,10 @@ describe 'POST /flows/:flowId/triggers/:triggerId', ->
       it 'should post the message', ->
         @postHandler.done()
 
+      it 'should respond with the triggered: true', ->
+        expect(@body).to.equal '{"triggered":true}'
+
+
   context 'when not authed', ->
     beforeEach (done) ->
       options =
@@ -128,3 +135,6 @@ describe 'POST /flows/:flowId/triggers/:triggerId', ->
 
     it 'should post the message', ->
       @postHandler.done()
+
+    it 'should respond with the triggered: true', ->
+      expect(@body.triggered).to.be.true

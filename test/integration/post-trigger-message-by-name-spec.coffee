@@ -73,6 +73,9 @@ describe 'POST /flows/triggers/:triggerName', ->
       it 'should get the devices', ->
         @getHandler.done()
 
+      it 'should respond with the triggered: true', ->
+        expect(@body.triggered).to.be.true
+
     context 'when posting a multipart form', ->
       beforeEach (done) ->
         auth =
@@ -136,6 +139,9 @@ describe 'POST /flows/triggers/:triggerName', ->
       it 'should get the devices', ->
         @getHandler.done()
 
+      it 'should respond with the triggered: true', ->
+        expect(@body).to.equal '{"triggered":true}'
+        
   context 'when not authed', ->
     beforeEach (done) ->
       options =
