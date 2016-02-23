@@ -4,7 +4,6 @@ request = require 'request'
 shmock  = require 'shmock'
 Server  = require '../../src/server'
 fakeFlow = require './fake-flow.json'
-fakeFlowOffline = require './fake-flow-offline.json'
 
 describe 'GET /mytriggers', ->
   beforeEach ->
@@ -45,8 +44,8 @@ describe 'GET /mytriggers', ->
       .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
 
     @getHandler = @meshblu.get('/devices')
-      .query(type:'octoblu:flow', owner:'ai-turns-hostile')
-      .reply 200, devices: [fakeFlow, fakeFlowOffline]
+      .query(type:'octoblu:flow', owner:'ai-turns-hostile', online: 'true')
+      .reply 200, devices: [fakeFlow]
 
     request.get "http://localhost:#{@serverPort}/mytriggers", options, (error, @response, @body) =>
       done error

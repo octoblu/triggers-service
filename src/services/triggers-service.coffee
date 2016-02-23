@@ -12,6 +12,7 @@ class TriggersService
     meshbluHttp = new MeshbluHttp @meshbluConfig
     query =
       type: 'octoblu:flow'
+      online: true
       owner: @meshbluConfig.uuid
       'flow.nodes':
         '$elemMatch':
@@ -26,7 +27,7 @@ class TriggersService
 
   allTriggers: ({type}, callback) =>
     meshbluHttp = new MeshbluHttp @meshbluConfig
-    meshbluHttp.devices type: 'octoblu:flow', (error, body) =>
+    meshbluHttp.devices type: 'octoblu:flow', online: true, (error, body) =>
       return callback @_createError 401, error.message if error?.message == 'unauthorized'
       return callback @_createError 500, error.message if error?
 
@@ -35,7 +36,7 @@ class TriggersService
 
   myTriggers: ({type}, callback) =>
     meshbluHttp = new MeshbluHttp @meshbluConfig
-    meshbluHttp.devices type: 'octoblu:flow', owner: @meshbluConfig.uuid, (error, body) =>
+    meshbluHttp.devices type: 'octoblu:flow', owner: @meshbluConfig.uuid, online: true, (error, body) =>
       return callback @_createError 401, error.message if error?.message == 'unauthorized'
       return callback @_createError 500, error.message if error?
 

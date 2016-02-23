@@ -6,7 +6,6 @@ class TriggerParser
 
     return triggers unless devices?
 
-    devices = _.filter devices, online: true
     _.each devices, (device) =>
       triggers = _.union triggers, TriggerParser.collectTriggersFromDevice({device,type})
 

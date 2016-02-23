@@ -54,6 +54,7 @@ describe 'POST /flows/triggers/:triggerName', ->
           .query {
             type: 'octoblu:flow'
             owner: 'ai-turns-hostile'
+            online: 'true'
             'flow.nodes':
               '$elemMatch':
                 name: 'GOOYAH'
@@ -100,6 +101,7 @@ describe 'POST /flows/triggers/:triggerName', ->
           .query {
             type: 'octoblu:flow'
             owner: 'ai-turns-hostile'
+            online: 'true'
             'flow.nodes':
               '$elemMatch':
                 name: 'GOOYAH'
@@ -141,7 +143,7 @@ describe 'POST /flows/triggers/:triggerName', ->
 
       it 'should respond with the triggered: true', ->
         expect(@body).to.equal '{"triggered":true}'
-        
+
   context 'when not authed', ->
     beforeEach (done) ->
       options =
