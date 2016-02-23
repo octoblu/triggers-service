@@ -20,6 +20,7 @@ class TriggerParser
       flowId: device.uuid
       flowName: device.name ? ''
       id: trigger.id
+      online: device.online
       uri: "https://triggers.octoblu.com/flows/#{device.uuid}/triggers/#{trigger.id}"
 
 
