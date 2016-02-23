@@ -1,8 +1,10 @@
+_       = require 'lodash'
 http    = require 'http'
 request = require 'request'
 shmock  = require 'shmock'
 Server  = require '../../src/server'
 fakeFlow = require './fake-flow.json'
+fakeFlowOffline = require './fake-flow-offline.json'
 
 describe 'GET /all-triggers', ->
   beforeEach ->
@@ -44,7 +46,7 @@ describe 'GET /all-triggers', ->
 
     @getHandler = @meshblu.get('/devices')
       .query(type:'octoblu:flow')
-      .reply 200, devices: [fakeFlow]
+      .reply 200, devices: [fakeFlow,fakeFlowOffline]
 
     request.get "http://localhost:#{@serverPort}/all-triggers", options, (error, @response, @body) =>
       done error
@@ -52,4 +54,5 @@ describe 'GET /all-triggers', ->
   it 'should return the triggers', ->
     expect(@response.statusCode).to.equal 200
     expect(@getHandler.isDone).to.be.true
+    expect(_.size(@body)).to.equal 1
     expect(@body[0]).to.contain id: '562f4090-9ed8-11e5-bf39-09fc31cb0cf0'
