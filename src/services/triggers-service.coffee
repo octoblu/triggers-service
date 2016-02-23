@@ -24,22 +24,22 @@ class TriggersService
       triggers = TriggerParser.parseTriggersFromDevices {devices: body.devices, type}
       callback null, triggers
 
-  allTriggers: (callback) =>
+  allTriggers: ({type}, callback) =>
     meshbluHttp = new MeshbluHttp @meshbluConfig
     meshbluHttp.devices type: 'octoblu:flow', (error, body) =>
       return callback @_createError 401, error.message if error?.message == 'unauthorized'
       return callback @_createError 500, error.message if error?
 
-      triggers = TriggerParser.parseTriggersFromDevices {devices: body.devices}
+      triggers = TriggerParser.parseTriggersFromDevices {devices: body.devices, type}
       callback null, triggers
 
-  myTriggers: (callback) =>
+  myTriggers: ({type}, callback) =>
     meshbluHttp = new MeshbluHttp @meshbluConfig
     meshbluHttp.devices type: 'octoblu:flow', owner: @meshbluConfig.uuid, (error, body) =>
       return callback @_createError 401, error.message if error?.message == 'unauthorized'
       return callback @_createError 500, error.message if error?
 
-      triggers = TriggerParser.parseTriggersFromDevices {devices: body.devices}
+      triggers = TriggerParser.parseTriggersFromDevices {devices: body.devices, type}
       callback null, triggers
 
   sendMessageById: ({flowId,triggerId,body,uploadedFiles,defaultPayload}, callback) =>

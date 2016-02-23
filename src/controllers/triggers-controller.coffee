@@ -9,14 +9,16 @@ class TriggersController
   allTriggers: (request, response) =>
     triggersService = new TriggersService {meshbluConfig: request.meshbluAuth}
 
-    triggersService.allTriggers (error, triggers) =>
+    {type} = request.query
+    triggersService.allTriggers {type}, (error, triggers) =>
       return response.status(error.code || 500).send error: error if error?
       response.status(200).send triggers
 
   myTriggers: (request, response) =>
     triggersService = new TriggersService {meshbluConfig: request.meshbluAuth}
 
-    triggersService.myTriggers (error, triggers) =>
+    {type} = request.query
+    triggersService.myTriggers {type}, (error, triggers) =>
       return response.status(error.code || 500).send error: error if error?
       response.status(200).send triggers
 
@@ -36,6 +38,7 @@ class TriggersController
 
   sendMessageByName: (request, response) =>
     {triggerName} = request.params
+    {type} = request.query
     {body} = request
 
     debug 'sendMessageByName', request.header('Content-Type'), request.body
@@ -44,7 +47,7 @@ class TriggersController
 
     uploadedFiles = @_handleFiles request
 
-    triggersService.sendMessageByName {triggerName,uploadedFiles,body}, (error) =>
+    triggersService.sendMessageByName {triggerName,uploadedFiles,body,type}, (error) =>
       return response.status(error.code || 500).send error: error if error?
       response.sendStatus(201)
 
