@@ -43,9 +43,9 @@ describe 'GET /mytriggers', ->
     @meshblu.get('/v2/whoami')
       .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
 
-    @getHandler = @meshblu.get('/devices')
+    @getHandler = @meshblu.get('/v2/devices')
       .query(type:'octoblu:flow', owner:'ai-turns-hostile', online: 'true')
-      .reply 200, devices: [fakeFlow]
+      .reply 200, [fakeFlow]
 
     request.get "http://localhost:#{@serverPort}/mytriggers", options, (error, @response, @body) =>
       done error

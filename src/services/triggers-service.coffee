@@ -18,29 +18,26 @@ class TriggersService
         '$elemMatch':
           name: name
           type: type
-    meshbluHttp.devices query, (error, body) =>
-      return callback @_createError 401, error.message if error?.message == 'unauthorized'
-      return callback @_createError 500, error.message if error?
+    meshbluHttp.devices query, (error, devices) =>
+      return callback error if error?
 
-      triggers = TriggerParser.parseTriggersFromDevices {devices: body.devices, type}
+      triggers = TriggerParser.parseTriggersFromDevices {devices, type}
       callback null, triggers
 
   allTriggers: ({type}, callback) =>
     meshbluHttp = new MeshbluHttp @meshbluConfig
-    meshbluHttp.devices type: 'octoblu:flow', online: true, (error, body) =>
-      return callback @_createError 401, error.message if error?.message == 'unauthorized'
-      return callback @_createError 500, error.message if error?
+    meshbluHttp.devices type: 'octoblu:flow', online: true, (error, devices) =>
+      return callback error if error?
 
-      triggers = TriggerParser.parseTriggersFromDevices {devices: body.devices, type}
+      triggers = TriggerParser.parseTriggersFromDevices {devices, type}
       callback null, triggers
 
   myTriggers: ({type}, callback) =>
     meshbluHttp = new MeshbluHttp @meshbluConfig
-    meshbluHttp.devices type: 'octoblu:flow', owner: @meshbluConfig.uuid, online: true, (error, body) =>
-      return callback @_createError 401, error.message if error?.message == 'unauthorized'
-      return callback @_createError 500, error.message if error?
+    meshbluHttp.devices type: 'octoblu:flow', owner: @meshbluConfig.uuid, online: true, (error, devices) =>
+      return callback error if error?
 
-      triggers = TriggerParser.parseTriggersFromDevices {devices: body.devices, type}
+      triggers = TriggerParser.parseTriggersFromDevices {devices, type}
       callback null, triggers
 
   sendMessageById: ({flowId,triggerId,body,uploadedFiles,defaultPayload}, callback) =>
@@ -60,22 +57,19 @@ class TriggersService
       payload: payload
 
     meshbluHttp.message message, (error, body) =>
-      return callback @_createError 401, error.message if error?.message == 'unauthorized'
-      return callback @_createError 500, error.message if error?
+      return callback error if error?
       return callback null
 
   sendMessageByName: ({triggerName,body,uploadedFiles,defaultPayload,type}, callback) =>
     @getTriggerByNames {name: triggerName, type: type}, (error, triggers) =>
       return callback error if error?
       trigger = _.find triggers, name: triggerName
-      return callback @_createError 404, 'No Trigger by that name' unless trigger?
+      unless trigger?
+        error = new Error 'No Trigger by that name'
+        error.code = 404
+        return callback error
 
       {id,flowId} = trigger
       @sendMessageById {flowId,triggerId:id,body,uploadedFiles,defaultPayload}, callback
-
-  _createError: (code, message) =>
-    error = new Error message
-    error.code = code
-    return error
 
 module.exports = TriggersService

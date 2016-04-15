@@ -11,7 +11,7 @@ class TriggersController
 
     {type} = request.query
     triggersService.allTriggers {type}, (error, triggers) =>
-      return response.status(error.code || 500).send error: error if error?
+      return response.sendError(error) if error?
       response.status(200).send triggers
 
   myTriggers: (request, response) =>
@@ -19,7 +19,7 @@ class TriggersController
 
     {type} = request.query
     triggersService.myTriggers {type}, (error, triggers) =>
-      return response.status(error.code || 500).send error: error if error?
+      return response.sendError(error) if error?
       response.status(200).send triggers
 
   sendMessageById: (request, response) =>
@@ -33,7 +33,7 @@ class TriggersController
     uploadedFiles = @_handleFiles request
 
     triggersService.sendMessageById {flowId,triggerId,uploadedFiles,body}, (error) =>
-      return response.status(error.code || 500).send error: error if error?
+      return response.sendError(error) if error?
       response.status(201).send triggered: true
 
   sendMessageByName: (request, response) =>
@@ -48,7 +48,7 @@ class TriggersController
     uploadedFiles = @_handleFiles request
 
     triggersService.sendMessageByName {triggerName,uploadedFiles,body,type}, (error) =>
-      return response.status(error.code || 500).send error: error if error?
+      return response.sendError(error) if error?
       response.status(201).send triggered: true
 
   _handleFiles: (request) =>

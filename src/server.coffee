@@ -4,8 +4,9 @@ express            = require 'express'
 bodyParser         = require 'body-parser'
 errorHandler       = require 'errorhandler'
 meshbluHealthcheck = require 'express-meshblu-healthcheck'
-meshbluAuth = require 'express-meshblu-auth'
+meshbluAuth        = require 'express-meshblu-auth'
 MeshbluAuthExpress = require 'express-meshblu-auth/src/meshblu-auth-express'
+SendError          = require 'express-send-error'
 debug              = require('debug')('triggers-service:server')
 Router             = require './router'
 multer             = require 'multer'
@@ -21,6 +22,7 @@ class Server
   run: (callback) =>
     app = express()
     app.use meshbluHealthcheck()
+    app.use SendError()
     app.use morgan 'dev', immediate: false unless @disableLogging
     app.use cors()
     app.use errorHandler()
