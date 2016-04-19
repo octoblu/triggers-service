@@ -16,9 +16,11 @@ Service to list and activate Octoblu triggers
 
 ## Get Triggers Example:
     curl https://username:password@triggers.octoblu.com/triggers
+
 ### Aliases
     curl https://username:password@triggers.octoblu.com/mytriggers
     curl https://username:password@triggers.octoblu.com/my-triggers
+
 ### Response
     =>
     [{
@@ -44,19 +46,19 @@ Service to list and activate Octoblu triggers
       "uri": "https://triggers.octoblu.com/flows/5b76ec5d-fea2-4160-97c2-cf10fe847158/triggers/396f2cf4-b352-4e38-b2f4-3f64ef854de8"
     }]
 
-    ## Get All Triggers Example:
-        curl https://username:password@triggers.octoblu.com/all-triggers
+## Get All Triggers Example:
+    curl https://username:password@triggers.octoblu.com/all-triggers
 
-    ### Response
-        =>
-        [{
-          "id" : "396f2cf4-b352-4e38-b2f4-3f64ef854de8",
-          "name" : "trigger",
-          "flowId" : "5b76ec5d-fea2-4160-97c2-cf10fe847158",
-          "flowName" : "sample",
-          "online": true,
-          "uri": "https://triggers.octoblu.com/flows/5b76ec5d-fea2-4160-97c2-cf10fe847158/triggers/396f2cf4-b352-4e38-b2f4-3f64ef854de8"
-        }]
+### Response
+    =>
+    [{
+      "id" : "396f2cf4-b352-4e38-b2f4-3f64ef854de8",
+      "name" : "trigger",
+      "flowId" : "5b76ec5d-fea2-4160-97c2-cf10fe847158",
+      "flowName" : "sample",
+      "online": true,
+      "uri": "https://triggers.octoblu.com/flows/5b76ec5d-fea2-4160-97c2-cf10fe847158/triggers/396f2cf4-b352-4e38-b2f4-3f64ef854de8"
+    }]
 
 ## Activate Trigger Example:
     curl -X POST https://username:password@triggers.octoblu.com/flows/:flowId/triggers/:id
