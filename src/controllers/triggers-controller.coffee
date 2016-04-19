@@ -9,16 +9,16 @@ class TriggersController
   allTriggers: (request, response) =>
     triggersService = new TriggersService {meshbluConfig: request.meshbluAuth}
 
-    {type} = request.query
-    triggersService.allTriggers {type}, (error, triggers) =>
+    {type, flowContains} = request.query
+    triggersService.allTriggers {type, flowContains}, (error, triggers) =>
       return response.sendError(error) if error?
       response.status(200).send triggers
 
   myTriggers: (request, response) =>
     triggersService = new TriggersService {meshbluConfig: request.meshbluAuth}
 
-    {type} = request.query
-    triggersService.myTriggers {type}, (error, triggers) =>
+    {type, flowContains} = request.query
+    triggersService.myTriggers {type, flowContains}, (error, triggers) =>
       return response.sendError(error) if error?
       response.status(200).send triggers
 

@@ -88,6 +88,14 @@
     "hash": "6918b8dd",
     "nodes": [
       {
+        "id":"ebc5f3ca-403b-4eba-b382-e1f43890d92d",
+        "type":"device:generic"
+      },
+      {
+        "id":"22fb6b5a-eee0-4805-86f2-146d738af35f",
+        "type":"device:twitter"
+      },
+      {
         "id": "562f4090-9ed8-11e5-bf39-09fc31cb0cf0",
         "resourceType": "flow-node",
         "payloadType": "date",

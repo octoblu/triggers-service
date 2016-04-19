@@ -6,10 +6,10 @@ randomstring  = require 'randomstring'
 
 class TriggersService
   constructor: ({@meshbluConfig}) ->
+    @meshbluHttp = new MeshbluHttp @meshbluConfig
 
   getTriggerByNames: ({name, type}, callback) =>
     type ?= 'operation:trigger'
-    meshbluHttp = new MeshbluHttp @meshbluConfig
     query =
       type: 'octoblu:flow'
       online: true
@@ -18,31 +18,25 @@ class TriggersService
         '$elemMatch':
           name: name
           type: type
-    meshbluHttp.devices query, (error, devices) =>
-      return callback error if error?
 
-      triggers = TriggerParser.parseTriggersFromDevices {devices, type}
-      callback null, triggers
+    @_queryAndParse {query, type}, callback
 
-  allTriggers: ({type}, callback) =>
-    meshbluHttp = new MeshbluHttp @meshbluConfig
-    meshbluHttp.devices type: 'octoblu:flow', online: true, (error, devices) =>
-      return callback error if error?
+  allTriggers: ({type, flowContains}, callback) =>
+    query =
+      type: 'octoblu:flow'
+      online: true
 
-      triggers = TriggerParser.parseTriggersFromDevices {devices, type}
-      callback null, triggers
+    @_queryAndParse {query, type, flowContains}, callback
 
-  myTriggers: ({type}, callback) =>
-    meshbluHttp = new MeshbluHttp @meshbluConfig
-    meshbluHttp.devices type: 'octoblu:flow', owner: @meshbluConfig.uuid, online: true, (error, devices) =>
-      return callback error if error?
+  myTriggers: ({type, flowContains}, callback) =>
+    query =
+      type: 'octoblu:flow'
+      owner: @meshbluConfig.uuid
+      online: true
 
-      triggers = TriggerParser.parseTriggersFromDevices {devices, type}
-      callback null, triggers
+    @_queryAndParse {query, type, flowContains}, callback
 
   sendMessageById: ({flowId,triggerId,body,uploadedFiles,defaultPayload}, callback) =>
-    meshbluHttp = new MeshbluHttp @meshbluConfig
-
     payloadOptions =
       from: triggerId
       params: body
@@ -56,7 +50,7 @@ class TriggersService
       topic: 'triggers-service'
       payload: payload
 
-    meshbluHttp.message message, (error, body) =>
+    @meshbluHttp.message message, (error, body) =>
       return callback error if error?
       return callback null
 
@@ -71,5 +65,12 @@ class TriggersService
 
       {id,flowId} = trigger
       @sendMessageById {flowId,triggerId:id,body,uploadedFiles,defaultPayload}, callback
+
+  _queryAndParse: ({query, type, flowContains}, callback) =>
+    @meshbluHttp.devices query, (error, devices) =>
+      return callback error if error?
+
+      triggers = TriggerParser.parseTriggersFromDevices {devices, type, flowContains}
+      callback null, triggers
 
 module.exports = TriggersService
