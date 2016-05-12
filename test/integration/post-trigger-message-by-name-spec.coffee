@@ -44,7 +44,7 @@ describe 'POST /flows/triggers/:triggerName', ->
           auth: auth
           json: true
 
-        @meshblu.get('/v2/whoami')
+        @meshblu.post('/authenticate')
           .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
 
         @postHandler = @meshblu.post('/messages')
@@ -94,7 +94,7 @@ describe 'POST /flows/triggers/:triggerName', ->
           auth: auth
           formData: formData
 
-        @meshblu.get('/v2/whoami')
+        @meshblu.post('/authenticate')
           .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
 
         @getHandler = @meshblu.get('/v2/devices')
@@ -149,7 +149,7 @@ describe 'POST /flows/triggers/:triggerName', ->
       options =
         json: true
 
-      @meshblu.get('/v2/whoami')
+      @meshblu.post('/authenticate')
         .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
 
       request.post "http://localhost:#{@serverPort}/flows/triggers/GOOYAH", options, (error, @response, @body) =>

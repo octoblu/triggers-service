@@ -40,7 +40,7 @@ describe 'GET /all-triggers?flowContains=device:generic', ->
       auth: auth
       json: true
 
-    @meshblu.get('/v2/whoami')
+    @meshblu.post('/authenticate')
       .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
 
     @getHandler = @meshblu.get('/v2/devices')

@@ -44,7 +44,7 @@ describe 'POST /flows/:flowId/triggers/:triggerId', ->
           auth: auth
           json: true
 
-        @meshblu.get('/v2/whoami')
+        @meshblu.post('/authenticate')
           .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
 
         @postHandler = @meshblu.post('/messages')
@@ -79,7 +79,7 @@ describe 'POST /flows/:flowId/triggers/:triggerId', ->
           auth: auth
           formData: formData
 
-        @meshblu.get('/v2/whoami')
+        @meshblu.post('/authenticate')
           .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
 
 
@@ -121,7 +121,7 @@ describe 'POST /flows/:flowId/triggers/:triggerId', ->
       options =
         json: true
 
-      @meshblu.get('/v2/whoami')
+      @meshblu.post('/authenticate')
         .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
 
       @postHandler = @meshblu.post('/messages')

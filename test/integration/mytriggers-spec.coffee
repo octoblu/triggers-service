@@ -40,7 +40,7 @@ describe 'GET /mytriggers', ->
       auth: auth
       json: true
 
-    @meshblu.get('/v2/whoami')
+    @meshblu.post('/authenticate')
       .reply 200, uuid: 'ai-turns-hostile', token: 'team-token'
 
     @getHandler = @meshblu.get('/v2/devices')
