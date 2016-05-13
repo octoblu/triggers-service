@@ -65,3 +65,18 @@ Service to list and activate Octoblu triggers
 
 ## Activate Trigger By Name Example:
     curl -X POST https://username:password@triggers.octoblu.com/flows/triggers/:triggerName
+
+### PowerShell examples of the above commands
+$meAuth = @{ meshblu_auth_uuid = 'user uuid'; meshblu_auth_token = 'user token' }
+
+## return all of my triggers
+$myTriggers = Invoke-RestMethod -URI http://triggers.octoblu.com/mytriggers -ContentType "application/json" -Headers $meAuth -Method Get
+
+## Return my Triggers where there is a Hue device in the flow
+$myTriggersCtxwin = Invoke-RestMethod -URI http://triggers.octoblu.com/all-triggers?flowContains=device:hue -ContentType "application/json" -Headers $meAuth -Method Get
+
+## then an individual flow behind a trigger 
+$myFlow = Invoke-RestMethod -URI ("http://meshblu.octoblu.com/devices/" + $myTriggers[0].flowId ) -ContentType "application/json" -Headers $meAuth -Method Get
+
+## activate a trigger
+Invoke-RestMethod -URI ( "http://triggers.octoblu.com//flows/" + $myTriggers[0].flowId + "/triggers/" + $myTriggers[0].id ) -ContentType "application/json" -Headers $meAuth -Method Post
