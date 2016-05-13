@@ -79,4 +79,4 @@ Service to list and activate Octoblu triggers
     $myFlow = Invoke-RestMethod -URI ("http://meshblu.octoblu.com/devices/" + $myTriggers[0].flowId ) -ContentType "application/json" -Headers $meAuth -Method Get
 
 ### activate a trigger
-    Invoke-RestMethod -URI ( "http://triggers.octoblu.com//flows/" + $myTriggers[0].flowId + "/triggers/" + $myTriggers[0].id ) -ContentType "application/json" -Headers $meAuth -Method Post
+    Invoke-RestMethod -URI ( "http://triggers.octoblu.com/flows/" + $myTriggers[0].flowId + "/triggers/" + $myTriggers[0].id ) -ContentType "application/json" -Headers $meAuth -Method Post
