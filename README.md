@@ -1,5 +1,5 @@
 # Octoblu Trigger Service
-Service to list and activate Octoblu triggers
+Service to list and activate Octoblu triggers within running flows
 
 [![Build Status](https://travis-ci.org/octoblu/triggers-service.svg?branch=master)](https://travis-ci.org/octoblu/triggers-service)
 [![Code Climate](https://codeclimate.com/github/octoblu/triggers-service/badges/gpa.svg)](https://codeclimate.com/github/octoblu/triggers-service)
