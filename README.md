@@ -9,4 +9,4 @@ Service to list and activate Octoblu triggers within running flows
 
 # Documentation
 
-The Triggers Service documentation is available at [triggers-service.readme.io](https://triggers-service.readme.io)
+The Triggers Service documentation is available at [trigger-service.readme.io](https://trigger-service.readme.io)
