@@ -36,6 +36,20 @@ class TriggersController
       return response.sendError(error) if error?
       response.status(201).send triggered: true
 
+  sendMessageByIdV2: (request, response) =>
+    {flowId, triggerId} = request.params
+    {body} = request
+
+    debug 'sendMessageById', request.header('Content-Type'), request.body
+
+    triggersService = new TriggersService {@meshbluConfig}
+
+    uploadedFiles = @_handleFiles request
+
+    triggersService.sendMessageByIdV2 {flowId,triggerId,uploadedFiles,body}, (error) =>
+      return response.sendError(error) if error?
+      response.sendStatus 201
+
   sendMessageByName: (request, response) =>
     {triggerName} = request.params
     {type} = request.query

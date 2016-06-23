@@ -1,21 +1,23 @@
-_       = require 'lodash'
-http    = require 'http'
-request = require 'request'
-shmock  = require 'shmock'
-Server  = require '../../src/server'
-fakeFlow = require './fake-flow.json'
+_             = require 'lodash'
+http          = require 'http'
+request       = require 'request'
+shmock        = require 'shmock'
+Server        = require '../../src/server'
+fakeFlow      = require './fake-flow.json'
+enableDestroy = require 'server-destroy'
 
 describe 'GET /mytriggers', ->
-  beforeEach ->
-    @meshblu = shmock 0xf00d
+  beforeEach (done) ->
+    @meshblu = shmock done
+    enableDestroy @meshblu
 
   afterEach (done) ->
-    @meshblu.close => done()
+    @meshblu.destroy done
 
   beforeEach (done) ->
     meshbluConfig =
       server: 'localhost'
-      port: 0xf00d
+      port: @meshblu.address().port
 
     serverOptions =
       port: undefined,

@@ -54,6 +54,19 @@ class TriggersService
       return callback error if error?
       return callback null
 
+  sendMessageByIdV2: ({flowId,triggerId,body,uploadedFiles,defaultPayload}, callback) =>
+    message =
+      metadata:
+        to:
+          nodeId: triggerId
+      files: uploadedFiles
+      devices: [flowId]
+      data: body
+
+    @meshbluHttp.message message, (error, body) =>
+      return callback error if error?
+      return callback null
+
   sendMessageByName: ({triggerName,body,uploadedFiles,defaultPayload,type}, callback) =>
     @getTriggerByNames {name: triggerName, type: type}, (error, triggers) =>
       return callback error if error?

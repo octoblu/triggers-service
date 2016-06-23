@@ -1,21 +1,23 @@
-http    = require 'http'
-request = require 'request'
-shmock  = require 'shmock'
-Server  = require '../../src/server'
-fs = require 'fs'
-fakeFlow = require './fake-flow.json'
+http          = require 'http'
+request       = require 'request'
+shmock        = require 'shmock'
+Server        = require '../../src/server'
+fs            = require 'fs'
+fakeFlow      = require './fake-flow.json'
+enableDestroy = require 'server-destroy'
 
 describe 'POST /flows/:flowId/triggers/:triggerId', ->
-  beforeEach ->
-    @meshblu = shmock 0xf00d
+  beforeEach (done) ->
+    @meshblu = shmock done
+    enableDestroy @meshblu
 
   afterEach (done) ->
-    @meshblu.close => done()
+    @meshblu.destroy done
 
   beforeEach (done) ->
     meshbluConfig =
       server: 'localhost'
-      port: 0xf00d
+      port: @meshblu.address().port
       uuid: 'trigger-service-uuid'
       token: 'trigger-service-token'
 

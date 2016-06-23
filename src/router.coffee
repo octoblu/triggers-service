@@ -13,6 +13,7 @@ class Router
       res.status(405).send('Method Not Allowed: POST required')
 
     app.post '/flows/:flowId/triggers/:triggerId', @triggersController.sendMessageById
+    app.post '/v2/flows/:flowId/triggers/:triggerId', @triggersController.sendMessageByIdV2
     app.post '/flows/triggers/:triggerName', @meshbluAuth.gateway(), @triggersController.sendMessageByName
 
 module.exports = Router
