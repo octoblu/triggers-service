@@ -34,7 +34,7 @@ class Server
       return response.statusCode < 400
     app.use morgan 'dev', { immediate: false, skip } unless @disableLogging
     app.use cors()
-    app.use meshbluAuth.retrieve()
+    app.use meshbluAuth.auth()
     app.use multer().any()
     # app.use bodyParser.raw type: 'multipart/form-data', limit: '50mb', extended: true
     app.use bodyParser.urlencoded limit: '50mb', extended : true, defer: true

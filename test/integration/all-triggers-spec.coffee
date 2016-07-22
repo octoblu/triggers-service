@@ -16,8 +16,9 @@ describe 'GET /all-triggers', ->
 
   beforeEach (done) ->
     meshbluConfig =
-      server: 'localhost'
+      hostname: 'localhost'
       port: @meshblu.address().port
+      protocol: 'http'
 
     serverOptions =
       port: undefined,

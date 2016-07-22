@@ -15,7 +15,7 @@ class TriggerParser
 
   @collectTriggersFromDevice: ({device, type, flowContains}) =>
     type ?= 'operation:trigger'
-    triggersInFlow = _.where device.flow?.nodes, {type}
+    triggersInFlow = _.filter device.flow?.nodes, {type}
     unless _.isEmpty flowContains
       return [] unless _.every flowContains, (nodeType) =>
         _.find(device.flow?.nodes, type: nodeType)?

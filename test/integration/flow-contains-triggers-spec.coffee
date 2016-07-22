@@ -16,8 +16,9 @@ describe 'GET /all-triggers?flowContains=device:generic', ->
 
   beforeEach (done) ->
     meshbluConfig =
-      server: 'localhost'
+      hostname: 'localhost'
       port: @meshblu.address().port
+      protocol: 'http'
 
     serverOptions =
       port: undefined,

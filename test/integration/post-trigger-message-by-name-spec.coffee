@@ -16,8 +16,9 @@ describe 'POST /flows/triggers/:triggerName', ->
 
   beforeEach (done) ->
     meshbluConfig =
-      server: 'localhost'
+      hostname: 'localhost'
       port: @meshblu.address().port
+      protocol: 'http'
       uuid: 'trigger-service-uuid'
       token: 'trigger-service-token'
 
