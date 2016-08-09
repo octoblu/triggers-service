@@ -57,6 +57,7 @@ class TriggersService
   sendMessageByIdV2: ({flowId,triggerId,body,uploadedFiles,defaultPayload}, callback) =>
     message =
       metadata:
+        createdAt: Date.now()
         to:
           nodeId: triggerId
       files: uploadedFiles
