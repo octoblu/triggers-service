@@ -7,7 +7,6 @@ compression        = require 'compression'
 meshbluHealthcheck = require 'express-meshblu-healthcheck'
 MeshbluAuth        = require 'express-meshblu-auth'
 expressVersion     = require 'express-package-version'
-SendError          = require 'express-send-error'
 Router             = require './router'
 multer             = require 'multer'
 debug              = require('debug')('triggers-service:server')
@@ -26,10 +25,9 @@ class Server
 
     app = express()
     app.use compression()
-    app.use @octobluRaven.express().handleErrors()
+    @octobluRaven.expressBundle { app }
     app.use meshbluHealthcheck()
     app.use expressVersion(format: '{"version": "%s"}')
-    app.use SendError()
     skip = (request, response) =>
       return response.statusCode < 400
     app.use morgan 'dev', { immediate: false, skip } unless @disableLogging

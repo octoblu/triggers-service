@@ -1,6 +1,6 @@
 {
   "name": "triggers-service",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -26,18 +26,16 @@
     "compression": "^1.6.2",
     "cors": "^2.5.3",
     "debug": "^2.2.0",
-    "errorhandler": "^1.4.2",
     "express": "^4.14.0",
     "express-meshblu-auth": "^7.0.0",
     "express-meshblu-healthcheck": "^1.0.0",
     "express-package-version": "0.0.2",
-    "express-send-error": "^1.1.0",
     "lodash": "^4.13.1",
     "meshblu-config": "^5.1.2",
     "meshblu-http": "^7.0.0",
     "morgan": "^1.6.1",
     "multer": "^1.1.0",
-    "octoblu-raven": "^3.0.4",
+    "octoblu-raven": "^4.0.0",
     "randomstring": "^1.1.3",
     "type-is": "^1.6.11"
   }
