@@ -4,6 +4,8 @@ node_js:
 addons:
   code_climate:
     repo_token: "59d5253f92e92a43749cc5d814f39d1d38e1043b9e0f7d7ea9e4411f3b483cb6"
+notifications:
+  webhooks: https://deploy-state.octoblu.com/deployments/travis-ci/org
 before_script:
 - npm install -g codeclimate-test-reporter
 after_script:
