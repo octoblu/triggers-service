@@ -1,6 +1,6 @@
 {
   "name": "triggers-service",
-  "version": "2.6.8",
+  "version": "2.6.9",
   "description": "",
   "main": "server.js",
   "scripts": {
