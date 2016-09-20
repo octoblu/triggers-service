@@ -30,3 +30,4 @@ node_modules
 
 #dev files
 *-dev
+.nyc_output
