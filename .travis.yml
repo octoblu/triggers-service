@@ -1,28 +1,21 @@
 language: node_js
 node_js:
-- '5'
+  - '5'
 addons:
   code_climate:
-    repo_token: "59d5253f92e92a43749cc5d814f39d1d38e1043b9e0f7d7ea9e4411f3b483cb6"
+    repo_token: 59d5253f92e92a43749cc5d814f39d1d38e1043b9e0f7d7ea9e4411f3b483cb6
 notifications:
-  webhooks: https://deploy-state.octoblu.com/deployments/travis-ci/org
+  webhooks:
+    - 'https://beekeeper.octoblu.com/webhooks/travis:ci'
 before_script:
-- npm install -g codeclimate-test-reporter
+  - npm install -g codeclimate-test-reporter
 after_script:
-- codeclimate-test-reporter < coverage/lcov.info
-deploy:
-  provider: npm
-  email: serveradmin@octoblu.com
-  api_key:
-    secure: dAUAKXPSiLvli4OTAWGP+b1p3d5Zt6VzSkro0+FSkoCLadv9DY4cet+jxpc2Ls1AEV6yHULu6KjCoGRw66FpQNmVzAzqEOw1qcTp0ir0G2jqUNb1bVOvDD7llEblDOdvxJ4mLJNKirZ0UWGxRfsWWBh4qrXoJk1+no6SVJCv6OM=
-  on:
-    tags: true
-    branches: true
+  - codeclimate-test-reporter < coverage/lcov.info
 branches:
   only:
-  - "/^v[0-9]/"
+    - '/^v[0-9]/'
 after_success:
-- npm run coverage
-- npm run mocha:json
-- bash <(curl -s https://codecov.io/bash)
-- bash <(curl -s https://codecov.octoblu.com/bash)
+  - npm run coverage
+  - 'npm run mocha:json'
+  - 'bash <(curl -s https://codecov.io/bash)'
+  - 'bash <(curl -s https://codecov.octoblu.com/bash)'
