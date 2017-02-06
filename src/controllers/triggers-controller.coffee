@@ -48,7 +48,7 @@ class TriggersController
 
     triggersService.sendMessageByIdV2 {flowId,triggerId,uploadedFiles,body}, (error) =>
       return response.sendError(error) if error?
-      response.sendStatus 201
+      response.status(201).end()
 
   sendMessageByName: (request, response) =>
     {triggerName} = request.params
