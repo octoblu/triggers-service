@@ -1,4 +1,3 @@
-_              = require 'lodash'
 MeshbluConfig  = require 'meshblu-config'
 SigtermHandler = require 'sigterm-handler'
 Server         = require './src/server'
